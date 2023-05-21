@@ -12,7 +12,7 @@
     - Refining the recruitment word portfolio.
 3. Honkai_Impact_3_Cn(2023.06)
     - Coin shop purchase function.
-4.Fate_Grand_Order_Cn(2023.07)
+4. Fate_Grand_Order_Cn(2023.07)
     - Coin quest function.
 5. [New]Honkai:Star_Rail_Cn(2023.06)
     - Daily task.
