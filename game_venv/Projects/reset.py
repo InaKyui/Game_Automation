@@ -17,6 +17,9 @@ from base.common import delete_directory
 
 
 def main():
+    if os.path.exists(os.path.join("\\".join(os.getcwd().split("\\")[:-1]), "Scripts", "__pycache__")):
+        delete_directory(dir_path=os.path.join("\\".join(os.getcwd().split("\\")[:-1]), "Scripts", "__pycache__"),
+                         dir_exist=False)
     if os.path.exists(os.path.join(os.getcwd(), "base", "__pycache__")):
         delete_directory(dir_path=os.path.join(os.getcwd(), "base", "__pycache__"),
                          dir_exist=False)
