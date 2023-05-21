@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : coordinate.py
-[Time]        : 2023/05/01 18:00:00
+[Time]        : 2023/05/21 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.0
+[Version]     : 2.1
 [Description] : Class coorndinate.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.0"
+__version__ = "Version: 2.1"
 
 import time
 import random
@@ -70,7 +70,7 @@ class Coordinate:
 
         # Click.
         click([actual_x, actual_y])
-        print_message("Success", "Click ({0}, {1})".format(str(actual_x), str(actual_y)))
+        # print_message("Success", "Click ({0}, {1})".format(str(actual_x), str(actual_y)))
         # Idle.
-        print_message("Success", "Wait {0} seconds".format(str(actual_time / 10)))
+        # print_message("Success", "Wait {0} seconds".format(str(actual_time / 10)))
         time.sleep(actual_time / 10)

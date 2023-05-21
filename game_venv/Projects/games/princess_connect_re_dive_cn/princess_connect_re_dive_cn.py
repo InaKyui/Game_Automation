@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : princess_connect_re_dive_cn.py
-[Time]        : 2023/05/01 18:00:00
+[Time]        : 2023/05/21 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.0
+[Version]     : 2.1
 [Description] : Princess connect re:dive project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.0"
+__version__ = "Version: 2.1"
 
 import os
 import time
@@ -28,7 +28,7 @@ class PrincessConnectReDive(Game):
         self.activity_name = "com.bilibili.permission.PermissionActivity"
         self.resolution = (1280, 720)
 
-    @function_log
+    @task_log
     def task_init(self):
         """
             Initialize task information.
@@ -188,7 +188,7 @@ class PrincessConnectReDive(Game):
         task = Task(task_name)
         self.tasks[task_mode].append(task)
 
-    @function_log
+    @task_log
     def __task_login(self):
         task = self.get_task("login")
         wait(self.get_image("login_menu.png"), timeout=360, interval=15)
@@ -197,9 +197,9 @@ class PrincessConnectReDive(Game):
         # Check if there is an update and update if available.
         if exists(self.get_image("button_confirm_blue.png")):
             touch(self.get_image("button_confirm_blue.png"))
-            time.sleep(30)
+            time.sleep(60)
         # Check special events such as birthdays and events.
-        for i in range(5):
+        for i in range(10):
             if exists(self.get_image("login_skip.png")):
                 touch(self.get_image("login_skip.png"))
                 time.sleep(7)
@@ -215,8 +215,9 @@ class PrincessConnectReDive(Game):
                 break
             else:
                 task.coordinates["blank_area"].click()
+            time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_explore(self):
         task = self.get_task("explore")
         if exists(self.get_image("bar_adventure_active.png")):
@@ -244,7 +245,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("explore_return.png"))
         time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_shopping(self):
         task = self.get_task("shopping")
         if exists(self.get_image("bar_main_active.png")):
@@ -263,7 +264,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("button_confirm_blue.png"))
         time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_guild(self):
         if exists(self.get_image("bar_main_active.png")):
             touch(self.get_image("bar_main_active.png"))
@@ -273,6 +274,9 @@ class PrincessConnectReDive(Game):
             time.sleep(5)
         touch(self.get_image("menu_guild.png"))
         time.sleep(7)
+        if exists(self.get_image("button_close.png")):
+            touch(self.get_image("button_close.png"))
+            time.sleep(3)
         if exists(self.get_image("button_confirm_white.png")):
             touch(self.get_image("button_confirm_white.png"))
             time.sleep(3)
@@ -283,7 +287,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("button_confirm_blue.png"))
         time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_home(self):
         touch(self.get_image("bar_home.png"))
         time.sleep(3)
@@ -295,7 +299,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("button_close.png"))
         time.sleep(1.5)
 
-    @function_log
+    @task_log
     def __task_gashapon(self):
         task = self.get_task("gashapon")
         touch(self.get_image("bar_gashapon.png"))
@@ -311,7 +315,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("button_confirm_white.png"))
         time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_dungeons(self):
         task = self.get_task("dungeons")
         if exists(self.get_image("bar_adventure_active.png")):
@@ -328,7 +332,7 @@ class PrincessConnectReDive(Game):
         touch(self.get_image("button_confirm_white.png"))
         time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_arena(self):
         task = self.get_task("arena")
         if exists(self.get_image("bar_adventure_active.png")):
@@ -360,7 +364,7 @@ class PrincessConnectReDive(Game):
             touch(self.get_image("button_confirm_white.png"))
             time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_princess_arena(self):
         task = self.get_task("princess_arena")
         if exists(self.get_image("bar_adventure_active.png")):
@@ -396,12 +400,12 @@ class PrincessConnectReDive(Game):
             touch(self.get_image("button_confirm_white.png"))
             time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_quest(self):
         task = self.get_task("quest")
         pass
 
-    @function_log
+    @task_log
     def __task_complete(self):
         if exists(self.get_image("bar_main_active.png")):
             touch(self.get_image("bar_main_active.png"))

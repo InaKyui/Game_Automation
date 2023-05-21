@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : game.py
-[Time]        : 2023/05/01 18:00:00
+[Time]        : 2023/05/21 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.0
+[Version]     : 2.1
 [Description] : Class game.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.0"
+__version__ = "Version: 2.1"
 
 import os
 import json
@@ -18,7 +18,8 @@ import random
 import datetime
 from base.common import *
 from base.task import Task
-from airtest.core.api import start_app, stop_app, Template
+from airtest.core.api import auto_setup, start_app, stop_app, Template
+from airtest.report.report import simple_report
 
 class Game:
     """
@@ -186,7 +187,7 @@ class Game:
 
         print_message("Success", "[{}] Log saved!".format(self.name))
 
-    @function_log
+    @task_log
     def start(self):
         """
             Start the application by package name.
@@ -195,7 +196,7 @@ class Game:
         start_app(self.package_name)
         time.sleep(30)
 
-    @function_log
+    @task_log
     def finish(self):
         """
             Stop the application by package name.
@@ -204,7 +205,7 @@ class Game:
         # stop_app(self.package_name)
         time.sleep(5)
 
-    @function_log
+    @task_log
     def task_init(self):
         """
             Initial game information, game tasks, coordinates etc.
@@ -234,13 +235,19 @@ class Game:
         """
             Task process.
         """
-
         if not self.config_ext:
             # Configuration file does not exist, initialize.
             self.task_init()
 
         total_count = self.pass_count + self.fail_count
         start_time = datetime.datetime.now()
+        start_time_str = start_time.strftime("%Y_%m_%d_%H_%M_%S")
+        # Create log directory, and initialize airtest.
+        log_dir = os.path.join(self.game_path, "log", start_time_str)
+        os.makedirs(log_dir)
+        auto_setup(basedir=os.path.join(self.game_path, "{}_{}.py".format(self.name, self.country)),
+                   logdir=log_dir)
+
         # Run according to the configuration file.
         try:
             # Start game.
@@ -262,8 +269,9 @@ class Game:
                         task_duration_time = (task_end_time - task_start_time).seconds
                         task_total_count = task.pass_count + task.fail_count
                         task.avg_time = round(((task_total_count * task.avg_time) + task_duration_time) / (task_total_count + 1), 2)
+                        print_message("Log", "↑ Time taken {} seconds.".format(str(task_duration_time)))
                     except Exception as e:
-                        print_message("Error", "Some errors have occurred in the task {}.".format(task.name))
+                        print_message("Error", "Some errors have occurred in the task ({}).".format(task.name))
                         print_message("Error", str(e))
                         print_message("Error", repr(e))
                         task.fail_count = task.fail_count + 1
@@ -282,3 +290,9 @@ class Game:
             self.fail_count = self.fail_count + 1
         finally:
             self.pass_rate = round(self.pass_count / (self.pass_count + self.fail_count), 4) * 100
+            # Generate log reports.
+            simple_report(filepath=os.path.join(self.game_path, "{0}_{1}.py".format(self.name, self.country)),
+                          logpath=log_dir,
+                          logfile=os.path.join(log_dir, "log.txt"),
+                          output=os.path.join(log_dir,
+                                              "{0}_{1}_{2}.html".format(self.name, self.country, start_time_str)))

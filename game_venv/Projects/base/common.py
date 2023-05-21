@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : common.py
-[Time]        : 2023/05/01 18:00:00
+[Time]        : 2023/05/21 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.0
+[Version]     : 2.1
 [Description] : Common methods.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.0"
+__version__ = "Version: 2.1"
 
 import os
 import json
@@ -44,6 +44,24 @@ def path_exists(path:str):
         raise FileExistsError
 
 
+def delete_directory(dir_path:str, dir_exist:bool=False):
+    """
+        Delete all files and directory in the target directory.
+
+        dir_exist - [True] Retain the target directory.
+                  - [False] Delete the target directory itself.
+    """
+
+    for root, dirs, files in os.walk(dir_path):
+        for file in files:
+            os.remove(os.path.join(root, file))
+        for dir in dirs:
+            delete_directory(os.path.join(root, dir))
+            os.rmdir(os.path.join(root, dir))
+    if not dir_exist:
+        os.rmdir(dir_path)
+
+
 def get_class_attribute(attribute:dict):
     """
         Convert class attributes to text.
@@ -74,15 +92,15 @@ def load_config(config_path:str):
         raise IOError("Please check config path.")
 
 
-def function_log(func):
+def task_log(func):
     """
-        Monitor the beginning and end of a function.
+        Monitor the beginning and end of a task function.
     """
 
     @wraps(func)
     def wrapper(*args,**kwargs):
-        print_message("Start", func.__name__)
+        print_message("Start", func.__name__.replace("__task_", ""))
         ret = func(*args,**kwargs)
-        print_message("Finish", func.__name__)
+        print_message("Finish", func.__name__.replace("__task_", ""))
         return ret
     return wrapper

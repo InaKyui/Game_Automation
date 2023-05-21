@@ -30,7 +30,7 @@ class Arknights(Game):
 
         self.__event_quest = False
 
-    @function_log
+    @task_log
     def task_init(self):
         """
             Initialize task information.
@@ -254,7 +254,7 @@ class Arknights(Game):
         task = Task(task_name)
         self.tasks[task_mode].append(task)
 
-    @function_log
+    @task_log
     def __task_login(self):
         # Game updates will cause the program error.
         wait(self.get_image("login_start.png"), timeout=360, interval=15)
@@ -275,7 +275,7 @@ class Arknights(Game):
             else:
                 break
 
-    @function_log
+    @task_log
     def __task_source_center(self):
         touch(self.get_image("menu_source_center.png"))
         time.sleep(3)
@@ -353,7 +353,7 @@ class Arknights(Game):
             touch(self.get_image("button_back.png"))
             time.sleep(3)
 
-    @function_log
+    @task_log
     def __task_infrastructure(self):
         touch(self.get_image("menu_infrastructure.png"))
         time.sleep(5)
@@ -406,7 +406,7 @@ class Arknights(Game):
             else:
                 break
 
-    @function_log
+    @task_log
     def __task_event_quest(self):
         task = self.get_task("event_quest")
         try:
@@ -442,7 +442,7 @@ class Arknights(Game):
                 else:
                     break
 
-    @function_log
+    @task_log
     def __task_daily_quest(self):
         # Determine if event quests have been completed.
         if self.__event_quest == False:
@@ -541,7 +541,7 @@ class Arknights(Game):
                     time.sleep(3)
                     break
 
-    @function_log
+    @task_log
     def __task_recruit_center(self):
         task = self.get_task("recruit_center")
         self.get_image("recruit_ensure.png")
@@ -591,7 +591,7 @@ class Arknights(Game):
             else:
                 break
 
-    @function_log
+    @task_log
     def __task_complete(self):
         touch(self.get_image("menu_task.png"))
         time.sleep(3)

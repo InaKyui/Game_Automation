@@ -27,7 +27,7 @@ class HonkaiImpact3(Game):
         self.package_name = "com.miHoYo.enterprise.NGHSoD"
         self.resolution = (1920, 1080)
 
-    @function_log
+    @task_log
     def task_init(self):
         """
             Initialize task information.
@@ -105,7 +105,7 @@ class HonkaiImpact3(Game):
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
 
-    @function_log
+    @task_log
     def __task_login(self):
         wait(self.get_image("login_tip.png"), timeout=360, interval=15)
         time.sleep(1)
@@ -129,7 +129,7 @@ class HonkaiImpact3(Game):
             else:
                 break
 
-    @function_log
+    @task_log
     def __task_energy(self):
         task = self.get_task("energy")
         touch(self.get_image("menu_task.png"))
@@ -142,7 +142,7 @@ class HonkaiImpact3(Game):
         touch(self.get_image("button_back.png"))
         time.sleep(5)
 
-    @function_log
+    @task_log
     def __task_home(self):
         task = self.get_task("home")
         touch(self.get_image("menu_home.png"))
@@ -217,7 +217,7 @@ class HonkaiImpact3(Game):
         touch(self.get_image("button_main.png"))
         time.sleep(5)
 
-    @function_log
+    @task_log
     def __task_fleet(self):
         touch(self.get_image("menu_fleet.png"))
         time.sleep(5)
@@ -246,7 +246,7 @@ class HonkaiImpact3(Game):
         touch(self.get_image("button_main.png"))
         time.sleep(5)
 
-    @function_log
+    @task_log
     def __task_quest(self):
         touch(self.get_image("menu_quest.png"))
         time.sleep(5)
@@ -261,7 +261,7 @@ class HonkaiImpact3(Game):
         touch(self.get_image("button_main.png"))
         time.sleep(5)
 
-    @function_log
+    @task_log
     def __task_complete(self):
         task = self.get_task("complete")
         touch(self.get_image("menu_task.png"))

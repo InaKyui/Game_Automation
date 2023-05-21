@@ -1,7 +1,7 @@
 {
     "emulator_path": "F:\\LDPlayer\\LDPlayer4.0\\dnplayer.exe",
     "game_list": [
-        "princess_connect_re_dive_cn",
+        ["princess_connect_re_dive_cn"],
         "arknights_cn",
         "honkai_impact_3_cn",
         "fate_grand_order_cn"
