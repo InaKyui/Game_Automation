@@ -143,35 +143,35 @@ class Arknights(Game):
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             5).get_coordinate_dict()
+                                             1.5).get_coordinate_dict()
             },
             {
                 "second_operator": Coordinate(round(485/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              5).get_coordinate_dict()
+                                              1.5).get_coordinate_dict()
             },
             {
                 "third_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             5).get_coordinate_dict()
+                                             1.5).get_coordinate_dict()
             },
             {
                 "fourth_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              5).get_coordinate_dict()
+                                              1.5).get_coordinate_dict()
             },
             {
                 "fifth_operator": Coordinate(round(765/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             5).get_coordinate_dict()
+                                             1.5).get_coordinate_dict()
             },
         ]
         task = Task(task_name, task_coordinates)

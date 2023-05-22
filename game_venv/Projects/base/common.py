@@ -57,7 +57,6 @@ def delete_directory(dir_path:str, dir_exist:bool=False):
             os.remove(os.path.join(root, file))
         for dir in dirs:
             delete_directory(os.path.join(root, dir))
-            os.rmdir(os.path.join(root, dir))
     if not dir_exist:
         os.rmdir(dir_path)
 
