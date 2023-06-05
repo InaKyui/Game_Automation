@@ -17,7 +17,11 @@
 5. [New]Honkai:Star_Rail_Cn(2023.06)
     - Daily task.
 
-### 〓 Updated Version 2.1 〓
+### 〓 Updated Version 2.2 〓
+1. Update arknights login task.
+2. Add the last day of game results.
+
+#### 〓 Updated Version 2.1 〓
 1. New HTML log function.
 2. Fix the bug that some images were missing.
 3. Optimize parts of the framework code.

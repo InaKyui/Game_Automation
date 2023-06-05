@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : game.py
-[Time]        : 2023/05/21 18:00:00
+[Time]        : 2023/06/05 00:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.1
+[Version]     : 2.2
 [Description] : Class game.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.1"
+__version__ = "Version: 2.2"
 
 import os
 import json
@@ -187,6 +187,22 @@ class Game:
 
         print_message("Success", "[{}] Log saved!".format(self.name))
 
+    def __update_result(self, game_result:str):
+        """
+            Update the results of the game.
+        """
+        result_dict = {}
+        result_path = os.path.join(os.getcwd(), "last_result.json")
+        # Load results.
+        if os.path.exists(result_path):
+            with open(result_path, "r") as fr:
+                result_dict = json.loads(fr)
+        # Add current result.
+        result_dict[self.name] = game_result
+        with open(result_path, "w", encoding="utf-8") as fw:
+            json_str = json.dumps(result_dict, indent=4)
+            fw.write(json_str)
+
     @task_log
     def start(self):
         """
@@ -283,11 +299,13 @@ class Game:
             duration_time = (end_time - start_time).seconds
             self.avg_time = round(((total_count * self.avg_time) + duration_time) / (total_count + 1), 2)
             self.finish()
+            self.__update_result("Success")
         except Exception as e:
             print_message("Error", "Some errors have occurred in the game {}.".format(self.name))
             print_message("Error", str(e))
             print_message("Error", repr(e))
             self.fail_count = self.fail_count + 1
+            self.__update_result("Fail")
         finally:
             self.pass_rate = round(self.pass_count / (self.pass_count + self.fail_count), 4) * 100
             # Generate log reports.
