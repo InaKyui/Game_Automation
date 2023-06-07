@@ -1,1 +1,0 @@
-.\Scripts\activate && cd Projects && python reset.py

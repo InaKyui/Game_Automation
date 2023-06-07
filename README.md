@@ -1,7 +1,10 @@
 ### 〓 Instructions 〓
-1. Please modify the configuration file according to your own needs.
-2. [emulator_path] in the configuration file represents the file path of the Android emulator.
-3. [game_list] in the configuration file represents the list of games that need to be executed.
+1. Please install python3 and run "prepare.bat" before running it for the first time.
+ - [Download] https://www.python.org/downloads/release/python-377/
+2. Modify the configuration file ".\Game_Automation\config\main.json".
+ - [emulator_path] in the configuration file represents the file path of the Android emulator.
+ - [game_list] in the configuration file represents the list of games that need to be executed.
+3. Run "start.bat" to start.
 
 ### 〓 Expected updates 〓
 1. Princess_Connect_Re:Dive_Cn(2023.06)
@@ -17,7 +20,10 @@
 5. [New]Honkai:Star_Rail_Cn(2023.06)
     - Daily task.
 
-### 〓 Updated Version 2.2 〓
+### 〓 Updated Version 2.3 〓
+1. Adapted for remoting emulators.
+
+#### 〓 Updated Version 2.2 〓
 1. Update arknights login task.
 2. Add the last day of game results.
 

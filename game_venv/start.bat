@@ -1,1 +1,0 @@
-.\Scripts\activate && cd Projects && python main.py
