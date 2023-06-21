@@ -505,11 +505,11 @@ class Arknights(Game):
             # self.get_image("recruit_tag_senior.png"),
             # self.get_image("recruit_tag_summon.png"),
             # Star 4.
-            self.get_image("recruit_tag_weaken.png"),
-            self.get_image("recruit_tag_erupt.png"),
-            self.get_image("recruit_tag_resurrection.png"),
-            self.get_image("recruit_tag_move.png"),
-            self.get_image("recruit_tag_special.png")
+            # self.get_image("recruit_tag_weaken.png"),
+            # self.get_image("recruit_tag_erupt.png"),
+            # self.get_image("recruit_tag_resurrection.png"),
+            # self.get_image("recruit_tag_move.png"),
+            # self.get_image("recruit_tag_special.png")
         ]
         for tag in tag_list:
             # Check combinations of tags.
@@ -533,10 +533,10 @@ class Arknights(Game):
             # Check single tag.
             else:
                 if exists(tag):
-                    if tag == tag_list[0]:
-                        # input("[Recruit] Top senior. Please check.")
-                        time.sleep(1)
-                        continue
+                    # if tag == tag_list[0]:
+                    #     input("[Recruit] Top senior. Please check.")
+                    #     time.sleep(1)
+                    #     continue
                     touch(tag)
                     time.sleep(3)
                     break

@@ -80,7 +80,16 @@ class HonkaiImpact3(Game):
         # Quest.
         task_name = "quest"
         task_mode = "random_task"
-        task = Task(task_name)
+        task_coordinates = [
+            {
+                "attack_button": Coordinate(round(105/rcr_rsl[0], 4),
+                                            round(315/rcr_rsl[1], 4),
+                                            round(5/rcr_rsl[0], 4),
+                                            round(5/rcr_rsl[1], 4),
+                                            1.5).get_coordinate_dict()
+            }
+        ]
+        task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
 
         # Complete.
@@ -107,6 +116,14 @@ class HonkaiImpact3(Game):
 
     @task_log
     def __task_login(self):
+        time.sleep(15)
+        if exists(self.get_image("button_confirm.png")):
+            touch(self.get_image("button_confirm.png"))
+            time.sleep(1)
+            wait(self.get_image("button_confirm.png"), timeout=360, interval=15)
+            time.sleep(1)
+            touch(self.get_image("button_confirm.png"))
+            time.sleep(15)
         wait(self.get_image("login_tip.png"), timeout=360, interval=15)
         time.sleep(1)
         touch(self.get_image("login_tip.png"))
@@ -248,8 +265,11 @@ class HonkaiImpact3(Game):
 
     @task_log
     def __task_quest(self):
+        task = self.get_task("quest")
         touch(self.get_image("menu_quest.png"))
         time.sleep(5)
+        if not exists(self.get_image("quest_resource.png")):
+            task.coordinates["attack_button"].click()
         touch(self.get_image("quest_resource.png"))
         time.sleep(3)
         touch(self.get_image("quest_event.png"))

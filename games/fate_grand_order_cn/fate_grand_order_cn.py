@@ -70,7 +70,7 @@ class FateGrandOrder(Game):
         touch(self.get_image("login_tip.png"))
         time.sleep(30)
         touch(self.get_image("login_logo.png"))
-        time.sleep(30)
+        time.sleep(45)
         touch(self.get_image("login_close.png"))
         time.sleep(5)
         for i in range(5):

@@ -48,12 +48,9 @@ def main():
                 dev = connect_device("Android://127.0.0.1:5037/127.0.0.1:7555")
                 time.sleep(5)
                 # Turn off advertising.
-                ads_btn = Coordinate(round(1600/1920, 4),
-                                     round(180/1080, 4),
-                                     round(3/1920, 4),
-                                     round(3/1080, 4),
-                                     5).get_coordinate_dict()
-                ads_btn.click()
+                cls_btn = os.path.join(os.getcwd(), "image", "button_close.png")
+                touch(Template(filename=cls_btn, resolution=(1280,720)))
+                time.sleep(1)
             except:
                 # Link normal emulators.
                 dev = connect_device("Android:///")

@@ -250,7 +250,7 @@ class Game:
             Get image by image name.
         """
         image_path = os.path.join(self.game_path, "image", image_name)
-        return Template(image_path, resolution=self.resolution)
+        return Template(filename=image_path, resolution=self.resolution)
 
     def task_process(self, switch_tasks:dict):
         """
