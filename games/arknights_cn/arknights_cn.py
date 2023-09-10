@@ -710,10 +710,10 @@ class Arknights(Game):
     def run_task(self):
         switch_tasks  = {
             "login": self.__task_login,
-            # "source_center": self.__task_source_center,
-            # "infrastructure": self.__task_infrastructure,
-            # "event_quest": self.__task_event_quest,
-            # "daily_quest": self.__task_daily_quest,
+            "source_center": self.__task_source_center,
+            "infrastructure": self.__task_infrastructure,
+            "event_quest": self.__task_event_quest,
+            "daily_quest": self.__task_daily_quest,
             "recruit_center": self.__task_recruit_center,
             "complete": self.__task_complete
         }
