@@ -7,20 +7,18 @@
 3. Run "start.bat" to start.
 
 ### 〓 Expected updates 〓
-1. Princess_Connect_Re:Dive_Cn(2023.06)
+1. Princess_Connect_Re:Dive_Cn(2023.10)
     - New area sweeping function;
     - Equipment shop purchase function;
     - Event quests sweeping function.
-2. Arknights_Cn(2023.07)
-    - Refining the recruitment word portfolio.
-3. Honkai_Impact_3_Cn(2023.06)
+3. Honkai_Impact_3_Cn(2023.10)
     - Coin shop purchase function.
-4. Fate_Grand_Order_Cn(2023.07)
-    - Coin quest function.
-5. [New]Honkai:Star_Rail_Cn(2023.06)
-    - Daily task.
 
-### 〓 Updated Version 2.3 〓
+### 〓 Updated Version 2.4 〓
+1. Add fate grand order cn coin quest function.
+2. Add arknigths recruitment function.
+
+#### 〓 Updated Version 2.3 〓
 1. Adapted for remoting emulators.
 
 #### 〓 Updated Version 2.2 〓

@@ -2,7 +2,7 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : princess_connect_re_dive_cn.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
 [Version]     : 2.3
@@ -178,6 +178,13 @@ class PrincessConnectReDive(Game):
         task_name = "quest"
         task_mode = "finish_task"
         task_coordinates = [
+            {
+                "next_quest": Coordinate(round(45/rcr_rsl[0], 4),
+                                         round(370/rcr_rsl[1], 4),
+                                         round(3/rcr_rsl[0], 4),
+                                         round(3/rcr_rsl[1], 4),
+                                         3).get_coordinate_dict()
+            }
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
@@ -199,7 +206,7 @@ class PrincessConnectReDive(Game):
             touch(self.get_image("button_confirm_blue.png"))
             time.sleep(60)
         # Check special events such as birthdays and events.
-        for i in range(10):
+        for _ in range(10):
             if exists(self.get_image("login_skip.png")):
                 touch(self.get_image("login_skip.png"))
                 time.sleep(7)
@@ -350,15 +357,15 @@ class PrincessConnectReDive(Game):
         time.sleep(3)
         task.coordinates["top_player"].click()
         time.sleep(3)
-        touch(self.get_image("arena_attack.png"))
+        touch(self.get_image("button_attack.png"))
         time.sleep(10)
         if exists(self.get_image("arena_skip.png")):
             touch(self.get_image("arena_skip.png"))
             time.sleep(3)
         else:
-            wait(self.get_image("arena_next.png"), timeout=360, interval=15)
+            wait(self.get_image("button_next.png"), timeout=360, interval=15)
             time.sleep(1)
-        touch(self.get_image("arena_next.png"))
+        touch(self.get_image("button_next.png"))
         time.sleep(5)
         if exists(self.get_image("button_confirm_white.png")):
             touch(self.get_image("button_confirm_white.png"))
@@ -386,15 +393,15 @@ class PrincessConnectReDive(Game):
         time.sleep(3)
         touch(self.get_image("arena_team3.png"))
         time.sleep(3)
-        touch(self.get_image("arena_attack.png"))
+        touch(self.get_image("button_attack.png"))
         time.sleep(15)
         if exists(self.get_image("arena_skip.png")):
             touch(self.get_image("arena_skip.png"))
             time.sleep(3)
         else:
-            wait(self.get_image("arena_next.png"), timeout=360, interval=15)
+            wait(self.get_image("button_next.png"), timeout=360, interval=15)
             time.sleep(1)
-        touch(self.get_image("arena_next.png"))
+        touch(self.get_image("button_next.png"))
         time.sleep(5)
         if exists(self.get_image("button_confirm_white.png")):
             touch(self.get_image("button_confirm_white.png"))
@@ -403,7 +410,76 @@ class PrincessConnectReDive(Game):
     @task_log
     def __task_quest(self):
         task = self.get_task("quest")
+        if exists(self.get_image("bar_adventure_active.png")):
+            touch(self.get_image("bar_adventure_active.png"))
+            time.sleep(5)
+        else:
+            touch(self.get_image("bar_adventure.png"))
+            time.sleep(5)
         pass
+        if exists(self.get_image("quest_entrance.png")):
+            touch(self.get_image("quest_entrance.png"))
+            time.sleep(5)
+            if exists(self.get_image("button_menu.png")):
+                touch(self.get_image("button_menu.png"))
+                time.sleep(5)
+                touch(self.get_image("button_auto.png"))
+                time.sleep(5)
+                wait(self.get_image("quest_map.png"))
+                time.sleep(1)
+                # ???.
+                if exists(self.get_image("button_close.png")):
+                    touch(self.get_image("button_close.png"))
+                    time.sleep(5)
+                touch(self.get_image("quest_map.png"))
+                time.sleep(5)
+            # ???.
+            touch(self.get_image("quest_very_hard_boss.png"))
+            time.sleep(5)
+            touch(self.get_image("quest_challenge.png"))
+            time.sleep(5)
+            touch(self.get_image("button_attack.png"))
+            time.sleep(5)
+            wait(self.get_image("button_next.png"))
+            time.sleep(1)
+            for _ in range(2):
+                touch(self.get_image("button_next.png"))
+                time.sleep(3)
+            if exists(self.get_image("button_menu.png")):
+                touch(self.get_image("button_menu.png"))
+                time.sleep(5)
+                touch(self.get_image("button_auto.png"))
+                time.sleep(5)
+                wait(self.get_image("quest_map.png"))
+                time.sleep(1)
+                touch(self.get_image("quest_map.png"))
+                time.sleep(5)
+            touch(self.get_image("quest_character.png"))
+            time.sleep(5)
+            for _ in range(5):
+                for _ in range(2):
+                    touch(self.get_image("quest_add.png"))
+                    time.sleep(1)
+                touch(self.get_image("quest_skip.png"))
+                time.sleep(3)
+                touch(self.get_image("button_confirm_blue.png"))
+                time.sleep(5)
+                touch(self.get_image("button_confirm_white.png"))
+                time.sleep(5)
+                if exists(self.get_image("button_confirm_white.png")):
+                    touch(self.get_image("button_confirm_white.png"))
+                    time.sleep(5)
+                # ??? shop.
+                if exists(self.get_image("quest_buy.png")):
+                    touch(self.get_image("quest_cancel.png"))
+                    time.sleep(5)
+                task.coordinates["next_quest"].click()
+            touch(self.get_image("quest_cancel.png"))
+            time.sleep(5)
+            touch(self.get_image("task_receive.png"))
+            time.sleep(5)
+            touch(self.get_image("button_close.png"))
+            time.sleep(5)
 
     @task_log
     def __task_complete(self):

@@ -13,13 +13,17 @@ __authors__ = ["InaKyui <https://github.com/InaKyui>"]
 __version__ = "Version: 2.3"
 
 import os
+import re
 import time
-# import pytesseract
+import numpy as np
+import requests
 from base.game import Game
 from base.task import Task
 from base.common import *
 from base.coordinate import Coordinate
+from typing import Dict, List, Tuple
 from airtest.core.api import *
+from airtest.aircv import *
 
 class Arknights(Game):
     def __init__(self, name="Arknights", country="Cn"):
@@ -236,6 +240,41 @@ class Arknights(Game):
                                              round(5/rcr_rsl[0], 4),
                                              round(5/rcr_rsl[1], 4),
                                              5).get_coordinate_dict()
+            },
+            {
+                "first_tag": Coordinate(round(450/rcr_rsl[0], 4),
+                                        round(385/rcr_rsl[1], 4),
+                                        round(60/rcr_rsl[0], 4),
+                                        round(15/rcr_rsl[1], 4),
+                                        5).get_coordinate_dict()
+            },
+            {
+                "second_tag": Coordinate(round(615/rcr_rsl[0], 4),
+                                         round(385/rcr_rsl[1], 4),
+                                         round(60/rcr_rsl[0], 4),
+                                         round(15/rcr_rsl[1], 4),
+                                         5).get_coordinate_dict()
+            },
+            {
+                "third_tag": Coordinate(round(780/rcr_rsl[0], 4),
+                                        round(385/rcr_rsl[1], 4),
+                                        round(60/rcr_rsl[0], 4),
+                                        round(15/rcr_rsl[1], 4),
+                                        5).get_coordinate_dict()
+            },
+            {
+                "fourth_tag": Coordinate(round(450/rcr_rsl[0], 4),
+                                         round(455/rcr_rsl[1], 4),
+                                         round(60/rcr_rsl[0], 4),
+                                         round(15/rcr_rsl[1], 4),
+                                         5).get_coordinate_dict()
+            },
+            {
+                "fifth_tag": Coordinate(round(615/rcr_rsl[0], 4),
+                                        round(455/rcr_rsl[1], 4),
+                                        round(60/rcr_rsl[0], 4),
+                                        round(15/rcr_rsl[1], 4),
+                                        5).get_coordinate_dict()
             },
             {
                 "max_time": Coordinate(round(450/rcr_rsl[0], 4),
@@ -496,59 +535,120 @@ class Arknights(Game):
                 else:
                     break
 
-    def __recruit_tag(self):
-        self.get_image("recruit_tag_top_senior.png")
-        tag_list = [
-            # Star 6.
-            self.get_image("recruit_tag_top_senior.png"),
-            # Star 5.
-            # self.get_image("recruit_tag_senior.png"),
-            # self.get_image("recruit_tag_summon.png"),
-            # Star 4.
-            # self.get_image("recruit_tag_weaken.png"),
-            # self.get_image("recruit_tag_erupt.png"),
-            # self.get_image("recruit_tag_resurrection.png"),
-            # self.get_image("recruit_tag_move.png"),
-            # self.get_image("recruit_tag_special.png")
+    def get_operators(self) -> Tuple[List[str], List[dict]]:
+        """
+            Get the list of all tags and operators information by crawling the official wiki.
+        """
+
+        tags = []
+        operators = []
+
+        session = requests.Session()
+        headers = {
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+                    "Referer": "https://www.pixiv.net/"
+                }
+        official_website = r"https://prts.wiki/w/%E5%B9%B2%E5%91%98%E4%B8%80%E8%A7%88"
+        rsp = session.get(url=official_website, headers=headers, verify=False)
+
+        # Get operators information by regularizing the response text.
+        data_ptn = re.compile("data-zh=.*? data-group=\".*?\"")
+        operator_property = data_ptn.findall(rsp.text)
+        operators_info = []
+        for op in operator_property:
+            operator_info = {}
+            for kv in op.split("\" "):
+                operator_info[kv.split("=")[0]] = kv.split("\"")[1]
+            operators_info.append(operator_info)
+        for operator_info in operators_info:
+            # Only count publicly recruited operator. e.g. data-obtain_method="公开招募, 主线剧情".
+            if "公开招募" in operator_info["data-obtain_method"] and 0 < int(operator_info["data-rarity"]) < 5:
+                operator = {}
+                # e.g. data-zh="Lancet-2".
+                operator["name"] = operator_info["data-zh"]
+                # e.g. data-rarity="0".
+                operator["rarity"] = int(operator_info["data-rarity"]) + 1
+                # e.g. data-profession="医疗" data-position="远程位" data-tag="支援机械 治疗"
+                operator["tag"] = [operator_info["data-profession"] + "干员", operator_info["data-position"]] +\
+                                operator_info["data-tag"].split(" ")
+                for ot in operator["tag"]:
+                    if ot not in tags:
+                        tags.append(ot)
+                operators.append(operator)
+        return tags, operators
+
+    def __recruit_tag(self, coordinates: Dict[str, Coordinate]):
+        """
+            Get the best tag combination and click.
+
+            Attributes:
+                coordinates - Used to get the tag area based on the actual coordinates.
+        """
+
+        # Get the list of all tags and operators information.
+        tags, operators = self.get_operators()
+        # Initialize tag information.
+        tags_info = [
+            { "name": "first_tag",
+              "content": "",
+              "rectangle": coordinates["first_tag"].get_click_area() },
+            { "name": "second_tag",
+              "content": "",
+              "rectangle": coordinates["second_tag"].get_click_area() },
+            { "name": "third_tag",
+              "content": "",
+              "rectangle": coordinates["third_tag"].get_click_area() },
+            { "name": "fourth_tag",
+              "content": "",
+              "rectangle": coordinates["fourth_tag"].get_click_area() },
+            { "name": "fifth_tag",
+              "content": "",
+              "rectangle": coordinates["fifth_tag"].get_click_area() },
         ]
-        for tag in tag_list:
-            # Check combinations of tags.
-            if isinstance(tag, list):
-                match_flag = False
-                for t in tag:
-                    if exists(t):
-                        if t == tag[-1]:
-                            # All tags matched.
-                            match_flag = True
-                        else:
-                            continue
+
+        # Get screenshot.
+        screen = G.DEVICE.snapshot()
+        for ti in tags_info:
+            # Crop tag area.
+            tag_image = aircv.crop_image(screen, ti["rectangle"])
+            tag_content = image_to_string(tag_image)
+            if tag_content in tags:
+                ti["content"] = tag_content
+
+        # Get all possible combinations.
+        tag_combo = []
+        for ti in tags_info:
+            if ti["content"] != "":
+                if len(tag_combo) > 0:
+                    tag_combo = tag_combo + [tcl + [ti["content"]] for tcl in tag_combo] + [[ti["content"]]]
+                else:
+                    tag_combo.append([ti["content"]])
+
+        scoring_sheet = {}
+        for tc in tag_combo:
+            for operator in operators:
+                if all(tct in operator["tag"] for tct in tc):
+                    if ",".join(tc) not in scoring_sheet.keys():
+                        scoring_sheet[",".join(tc)] = [operator["rarity"]]
                     else:
-                        break
-                # Tags matched & Select combinations of tags.
-                if match_flag:
-                    for t in tag:
-                        touch(t)
-                        time.sleep(1.5)
-                    break
-            # Check single tag.
-            else:
-                if exists(tag):
-                    # if tag == tag_list[0]:
-                    #     input("[Recruit] Top senior. Please check.")
-                    #     time.sleep(1)
-                    #     continue
-                    touch(tag)
-                    time.sleep(3)
-                    break
+                        scoring_sheet[",".join(tc)].append(operator["rarity"])
+                else:
+                    continue
+        for ssk in scoring_sheet.keys():
+            scoring_sheet[ssk] = round(len([x for x in scoring_sheet[ssk] if x > 3 or x == 1]) / len(scoring_sheet[ssk]) , 4) * 100
+        # Sort tag combinations by probability.
+        target_tag = sorted(scoring_sheet.items(), key=lambda x:x[1])[-1][0].split(",")
+        for ti in tags_info:
+            if ti["content"] in target_tag:
+                coordinates[ti["name"]].click()
 
     @task_log
     def __task_recruit_center(self):
         task = self.get_task("recruit_center")
-        self.get_image("recruit_ensure.png")
-
 
         touch(self.get_image("menu_recruit.png"))
         time.sleep(5)
+
         # Check whether acceleration is required.
         for i in range(4):
             if exists(self.get_image("recruit_accelerate.png")):
@@ -561,6 +661,7 @@ class Arknights(Game):
                     break
             else:
                 break
+
         # Recruit the operator.
         for i in range(4):
             if exists(self.get_image("recruit_complete.png")):
@@ -572,17 +673,25 @@ class Arknights(Game):
                 time.sleep(3)
             else:
                 break
+
         # Add recruit order.
         index = ["first", "second", "third", "fourth"]
         for i in range(len(index)):
             task.coordinates["{0}_archive".format(index[i])].click()
-            time.sleep(3)
-            task.coordinates["max_time"].click()
-            time.sleep(1.5)
-            self.__recruit_tag()
-            time.sleep(3)
-            touch(self.get_image("recruit_ensure.png"))
-            time.sleep(1.5)
+            time.sleep(1)
+            # Human-operated recruitment of six-star operator.
+            if exists(self.get_image("recruit_tag_top_senior.png")):
+                touch(self.get_image("button_back.png"))
+                time.sleep(3)
+                continue
+            else:
+                task.coordinates["max_time"].click()
+                time.sleep(1.5)
+                self.__recruit_tag(task.coordinates)
+                time.sleep(3)
+                touch(self.get_image("recruit_ensure.png"))
+                time.sleep(1.5)
+
         # Back to the home page.
         for i in range(5):
             if exists(self.get_image("button_back.png")):
@@ -601,10 +710,10 @@ class Arknights(Game):
     def run_task(self):
         switch_tasks  = {
             "login": self.__task_login,
-            "source_center": self.__task_source_center,
-            "infrastructure": self.__task_infrastructure,
-            "event_quest": self.__task_event_quest,
-            "daily_quest": self.__task_daily_quest,
+            # "source_center": self.__task_source_center,
+            # "infrastructure": self.__task_infrastructure,
+            # "event_quest": self.__task_event_quest,
+            # "daily_quest": self.__task_daily_quest,
             "recruit_center": self.__task_recruit_center,
             "complete": self.__task_complete
         }

@@ -2,7 +2,7 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : common.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
 [Version]     : 2.3
@@ -15,6 +15,8 @@ __version__ = "Version: 2.3"
 import os
 import json
 import time
+import numpy as np
+import pytesseract
 from functools import wraps
 
 def print_message(status:str, message:str):
@@ -27,6 +29,14 @@ def print_message(status:str, message:str):
 
     print("[{0}][{1}]".format(time.strftime("%H:%M:%S", time.localtime()),
             status).ljust(20, " ") + " {}".format(message))
+
+
+def image_to_string(img: np.ndarray) -> str:
+    """
+        Text recognition.
+    """
+    text = pytesseract.image_to_string(img, lang='chi_sim')
+    return text.strip()
 
 
 def path_exists(path:str):

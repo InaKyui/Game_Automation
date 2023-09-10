@@ -2,7 +2,7 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : coordinate.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
 [Version]     : 2.3
@@ -15,13 +15,14 @@ __version__ = "Version: 2.3"
 import time
 import random
 from base.common import print_message, get_class_attribute
+from typing import List
 from airtest.core.api import device, click
 
 class Coordinate:
     """
         Attributes:
-            x - X coordinate of the click position..(decimal)
-            y - Y coordinate of the click position..(decimal)
+            x - X coordinate of the click position.(decimal)
+            y - Y coordinate of the click position.(decimal)
             error_x - The x-coordinate offset value.(decimal)
             error_y - The y-coordinate offset value.(decimal)
             idle - Waiting time after click, unit is seconds.
@@ -74,3 +75,17 @@ class Coordinate:
         # Idle.
         # print_message("Success", "Wait {0} seconds".format(str(actual_time / 10)))
         time.sleep(actual_time / 10)
+
+    def get_click_area(self) -> List[int]:
+        """
+            Get a rectangular area based on point coordinates and allowable error range.
+        """
+
+        resolution = device().get_current_resolution()
+
+        x = int(self.x * resolution[0])
+        y = int(self.y * resolution[1])
+        error_x = int(self.error_x * resolution[0])
+        error_y = int(self.error_y * resolution[1])
+
+        return [x - error_x, y - error_y, x + error_x, y + error_y]
