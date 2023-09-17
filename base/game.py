@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : game.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Class game.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
 import os
 import json
@@ -18,7 +18,7 @@ import random
 import datetime
 from base.common import *
 from base.task import Task
-from airtest.core.api import auto_setup, home, start_app, stop_app, touch, Template
+from airtest.core.api import auto_setup, exists, home, start_app, stop_app, touch, Template, wait
 from airtest.report.report import simple_report
 
 class Game:
@@ -29,6 +29,7 @@ class Game:
                 country - Country of the game.
                 package_name - Android application package name.
                 activity_name - Android application activity name.
+                speed - Waiting speed. The bigger the number, the slower the speed.
                 resolution - Resolution at coordinate recording.
                 tasks - Task set, containing three phases: start, random and finish.
             [Statistics]
@@ -44,6 +45,7 @@ class Game:
         self.country = country
         self.package_name = ""
         self.activity_name = ""
+        self.speed = 1
         self.resolution = (1920, 1080)
         self.tasks = {
             "start_task": [],
@@ -213,8 +215,8 @@ class Game:
             start_app(self.package_name)
         except:
             home()
-            time.sleep(5)
-            touch(self.get_image("{0}_{1}.png".format(self.name, self.country)))
+            time.sleep(1.5)
+            self.touch("{0}_{1}.png".format(self.name, self.country))
         time.sleep(30)
 
     @task_log
@@ -234,7 +236,7 @@ class Game:
 
         pass
 
-    def get_task(self, task_name:str):
+    def get_task(self, task_name:str) -> Task:
         """
             Get task class by task name.
         """
@@ -245,12 +247,41 @@ class Game:
                     return task
         raise IndexError("Please check task mode and name.")
 
-    def get_image(self, image_name:str):
+    def __get_image(self, image_name:str):
         """
             Get image by image name.
+            If extension doesn't exist, auto-complete it to png format.
         """
-        image_path = os.path.join(self.game_path, "image", image_name)
+
+        # Check the extension.
+        if ".png" not in image_name and ".jpg" not in image_name:
+            image_path = os.path.join(self.game_path, "image", image_name + ".png")
+        else:
+            image_path = os.path.join(self.game_path, "image", image_name)
         return Template(filename=image_path, resolution=self.resolution)
+
+    def exists(self, image_name:str):
+        """
+            Overloading the exists function.
+        """
+
+        return exists(self.__get_image(image_name))
+
+    def touch(self, image_name:str, wait_time:int=1, **kwargs):
+        """
+            Overloading the touch function.
+        """
+
+        touch(self.__get_image(image_name), **kwargs)
+        if wait_time:
+            time.sleep(wait_time * self.speed)
+
+    def wait(self, image_name:str, **kwargs):
+        """
+            Overloading the wait function.
+        """
+
+        wait(self.__get_image(image_name), **kwargs)
 
     def task_process(self, switch_tasks:dict):
         """

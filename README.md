@@ -10,11 +10,17 @@
 1. Princess_Connect_Re:Dive_Cn(2023.10)
     - New area sweeping function;
     - Equipment shop purchase function;
-    - Event quests sweeping function.
-3. Honkai_Impact_3_Cn(2023.10)
+2. Honkai_Impact_3_Cn(2023.10)
     - Coin shop purchase function.
+3. [*New*] User_Interface(2023.10)
+    - Interface operation options.
 
-### 〓 Updated Version 2.4 〓
+### 〓 Updated Version 2.5 〓
+1. Add princess connect re:dive cn event quests sweeping function.
+2. Optimize arknigths recruitment function.
+3. Optimize base function.
+
+#### 〓 Updated Version 2.4 〓
 1. Add fate grand order cn coin quest function.
 2. Add arknigths recruitment function.
 
@@ -37,5 +43,3 @@
 
 #### 〓 Updated Version 1.x 〓
 1. Automate four game projects without framework.
-
-

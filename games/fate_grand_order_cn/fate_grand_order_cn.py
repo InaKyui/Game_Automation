@@ -2,18 +2,16 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : fate_grand_order_cn.py
-[Time]        : 2023/09/10 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Fate grand order project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
-import os
-import time
 from base.game import Game
 from base.task import Task
 from base.common import *
@@ -144,17 +142,17 @@ class FateGrandOrder(Game):
                                                round(250/rcr_rsl[1], 4),
                                                round(5/rcr_rsl[0], 4),
                                                round(5/rcr_rsl[1], 4),
-                                               1.5).get_coordinate_dict(),
+                                               0.5).get_coordinate_dict(),
                 "noble_phantasm_2": Coordinate(round(960/rcr_rsl[0], 4),
                                                round(250/rcr_rsl[1], 4),
                                                round(5/rcr_rsl[0], 4),
                                                round(5/rcr_rsl[1], 4),
-                                               1.5).get_coordinate_dict(),
+                                               0.5).get_coordinate_dict(),
                 "noble_phantasm_3": Coordinate(round(1290/rcr_rsl[0], 4),
                                                round(250/rcr_rsl[1], 4),
                                                round(5/rcr_rsl[0], 4),
                                                round(5/rcr_rsl[1], 4),
-                                               1.5).get_coordinate_dict(),
+                                               0.5).get_coordinate_dict(),
                 "card_1": Coordinate(round(195/rcr_rsl[0], 4),
                                      round(750/rcr_rsl[1], 4),
                                      round(5/rcr_rsl[0], 4),
@@ -172,132 +170,100 @@ class FateGrandOrder(Game):
 
     @task_log
     def __task_login(self):
-        time.sleep(30)
-        if exists(self.get_image("login_update.png")):
-            touch(self.get_image("login_update.png"))
-            time.sleep(1)
-        wait(self.get_image("login_tip.png"), timeout=360, interval=15)
-        time.sleep(1)
-        touch(self.get_image("login_tip.png"))
-        time.sleep(30)
-        touch(self.get_image("login_logo.png"))
-        time.sleep(45)
-        touch(self.get_image("login_close.png"))
-        time.sleep(5)
-        for i in range(5):
-            if exists(self.get_image("button_close.png")):
-                touch(self.get_image("button_close.png"))
-                time.sleep(3)
+        if self.exists("login_update"):
+            self.touch("login_update")
+        self.wait("login_tip", timeout=300, interval=10)
+        self.touch("login_tip")
+        self.wait("login_logo", timeout=50, interval=5)
+        self.touch("login_logo")
+        self.wait("login_close", timeout=50, interval=5)
+        self.touch("login_close", 3)
+        for _ in range(5):
+            if self.exists("button_close"):
+                self.touch("button_close", 1.5)
             else:
                 break
 
     @task_log
     def __task_daily_quest(self):
         task = self.get_task("daily_quest")
+        self.touch("quest_entrance")
+        self.touch("quest_daily_mission")
+        if not self.exists("quest_coin"):
+            task.coordinates["scroll_bar"].click()
+        self.touch("quest_coin")
 
         for cycle in range(3):
-            touch(self.get_image("quest_entrance.png"))
-            time.sleep(1)
-            touch(self.get_image("quest_daily_mission.png"))
-            time.sleep(1)
-            if not exists(self.get_image("quest_coin.png")):
-                task.coordinates["scroll_bar"].click()
-                time.sleep(1)
-            touch(self.get_image("quest_coin.png"))
-            time.sleep(1)
-            touch(self.get_image("quest_craft_essences_monalisa.png"))
-            time.sleep(1)
+            self.touch("quest_class_caster")
+            for _ in range(5):
+                if self.exists("quest_craft_essences_monalisa"):
+                    self.touch("quest_craft_essences_monalisa")
+                else:
+                    self.touch("quest_refresh")
+                    self.touch("quest_confirm", 1.5)
             if cycle == 0:
-                touch(self.get_image("quest_start.png"))
-                time.sleep(10)
-
-            wait(self.get_image("quest_attack.png"))
-            time.sleep(1)
+                self.touch("quest_start")
+            self.wait("quest_attack", timeout=30, interval=5)
             # Round 1.
-            task.coordinates["servant_1_1"].click()
-            time.sleep(5)
-            task.coordinates["servant_2_1"].click()
-            time.sleep(1)
-            task.coordinates["skill_1"].click()
-            time.sleep(5)
-            task.coordinates["servant_2_2"].click()
-            time.sleep(1)
-            task.coordinates["skill_1"].click()
-            time.sleep(5)
-            task.coordinates["servant_3_1"].click()
-            time.sleep(5)
-            task.coordinates["servant_3_2"].click()
-            time.sleep(1)
-            task.coordinates["skill_1"].click()
-            time.sleep(5)
-            task.coordinates["servant_3_3"].click()
-            time.sleep(1)
-            task.coordinates["skill_1"].click()
-            time.sleep(5)
-            task.coordinates["master_main"].click()
-            time.sleep(0.5)
-            task.coordinates["master_2"].click()
-            time.sleep(0.5)
-            task.coordinates["skill_1"].click()
-            time.sleep(5)
-            touch(self.get_image("quest_attack.png"))
-            time.sleep(1.5)
+            task.coordinates["servant_1_1"].click(5)
+            task.coordinates["servant_2_1"].click(1)
+            task.coordinates["skill_1"].click(5)
+            task.coordinates["servant_2_2"].click(1)
+            task.coordinates["skill_1"].click(5)
+            task.coordinates["servant_3_1"].click(5)
+            task.coordinates["servant_3_2"].click(1)
+            task.coordinates["skill_1"].click(5)
+            task.coordinates["servant_3_3"].click(1)
+            task.coordinates["skill_1"].click(5)
+            task.coordinates["master_main"].click(0.5)
+            task.coordinates["master_2"].click(0.5)
+            task.coordinates["skill_1"].click(5)
+            self.touch("quest_attack", 1.5)
             task.coordinates["noble_phantasm_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_2"].click()
-            time.sleep(15)
-            wait(self.get_image("quest_attack.png"))
-            time.sleep(1)
+            self.wait("quest_attack", timeout=30, interval=5)
             # Round 2.
-            touch(self.get_image("quest_attack.png"))
-            time.sleep(1.5)
+            self.touch("quest_attack", 1.5)
             task.coordinates["noble_phantasm_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_2"].click()
-            time.sleep(15)
-            wait(self.get_image("quest_attack.png"))
-            time.sleep(1)
+            self.wait("quest_attack", timeout=30, interval=5)
             # Round 3.
-            task.coordinates["servant_1_3"].click()
-            time.sleep(5)
-            touch(self.get_image("quest_attack.png"))
-            time.sleep(1.5)
+            task.coordinates["servant_1_3"].click(5)
+            self.touch("quest_attack", 1.5)
             task.coordinates["noble_phantasm_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_1"].click()
-            time.sleep(0.5)
             task.coordinates["card_2"].click()
-            time.sleep(15)
             # Finish.
-            wait(self.get_image("quest_fetters.png"), timeout=360, interval=15)
-            time.sleep(1)
-            touch(self.get_image("quest_fetters.png"), timeout=360, interval=15)
-            time.sleep(1)
-            touch(self.get_image("quest_experiences.png"), timeout=360, interval=15)
-            time.sleep(1)
+            self.wait("quest_fetters", timeout=300, interval=10)
+            self.touch("quest_fetters")
+            self.touch("quest_experiences")
             for _ in range(3):
-                if exists(self.get_image("quest_next.png")):
-                    touch(self.get_image("quest_next.png"))
-                    time.sleep(1.5)
+                if self.exists("quest_next"):
+                    self.touch("quest_next", 1.5)
                 else:
                     break
-            touch(self.get_image("quest_continue.png"))
-            time.sleep(1.5)
-            if exists(self.get_image("quest_silver_apple.png")):
+            self.touch("quest_continue", 1.5)
+            if self.exists("quest_silver_apple"):
                 break
-                # touch(self.get_image("quest_silver_apple.png"))
-                # time.sleep(1.5)
-                # touch(self.get_image("quest_decide.png"))
-                # time.sleep(1.5)
+                # self.touch("quest_silver_apple", 1.5)
+                # self.touch("quest_decide", 1.5)
 
-    def run_task(self):
+    def run_task(self, task:str=None, special_task:str=None):
+        # Collection of tasks and special tasks.
         switch_tasks  = {
             "login": self.__task_login,
             "daily_quest": self.__task_daily_quest
         }
 
-        self.task_process(switch_tasks)
+        if task:
+            self.task_init()
+            for t in task:
+                switch_tasks.get(t)()
+        elif special_task:
+            self.task_init()
+            for st in special_task:
+                switch_tasks.get("[special]" + st)()
+        else:
+            self.task_process(switch_tasks)

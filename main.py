@@ -2,40 +2,41 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : main.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/15 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Code entrance.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
 import os
 import time
 import logging
+import argparse
 import subprocess
 from base.common import *
-from base.coordinate import Coordinate
 from airtest.core.api import *
 
-def main():
+def main(args:argparse.Namespace):
     # Load config.
     config_path = os.path.join(os.getcwd(), "config", "main.json")
     config_dict = load_config(config_path)
     emulator_path = config_dict["emulator_path"]
 
-    # Delete the last result.
-    if os.path.exists(os.path.join(os.getcwd(), "last_result.json")):
-        os.remove(os.path.join(os.getcwd(), "last_result.json"))
+    if not args.debug:
+        # Delete the last result.
+        if os.path.exists(os.path.join(os.getcwd(), "last_result.json")):
+            os.remove(os.path.join(os.getcwd(), "last_result.json"))
 
-    # Start emulator.
-    obj = subprocess.Popen(emulator_path,
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE)
-    time.sleep(60)
+        # Start emulator.
+        obj = subprocess.Popen(emulator_path,
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE)
+        time.sleep(30)
 
     # Connect airtest module.
     logger = logging.getLogger("airtest")
@@ -67,27 +68,35 @@ def main():
                 print_message("Error", "Android devices lost.")
                 raise IndexError("Android devices lost.")
 
-    # Execute scripts.
-    if "princess_connect_re_dive_cn" in config_dict["game_list"]:
+    game_list = []
+    if "princess_connect_re_dive_cn" in config_dict["game_list"] and not args.game or "princess_connect_re_dive_cn" in args.game:
         from games.princess_connect_re_dive_cn import princess_connect_re_dive_cn
-
         pcr_cn = princess_connect_re_dive_cn.PrincessConnectReDive()
-        pcr_cn.run_task()
-    if "arknights_cn" in config_dict["game_list"]:
+        game_list.append(pcr_cn)
+    if "arknights_cn" in config_dict["game_list"] and not args.game or "arknights_cn" in args.game:
         from games.arknights_cn import arknights_cn
-
         akn_cn = arknights_cn.Arknights()
-        akn_cn.run_task()
-    if "honkai_impact_3_cn" in config_dict["game_list"]:
+        game_list.append(akn_cn)
+    if "honkai_impact_3_cn" in config_dict["game_list"] and not args.game or "honkai_impact_3_cn" in args.game:
         from games.honkai_impact_3_cn import honkai_impact_3_cn
-
         hki_cn = honkai_impact_3_cn.HonkaiImpact3()
-        hki_cn.run_task()
-    if "fate_grand_order_cn" in config_dict["game_list"]:
+        game_list.append(hki_cn)
+    if "fate_grand_order_cn" in config_dict["game_list"] and not args.game or "fate_grand_order_cn" in args.game:
         from games.fate_grand_order_cn import fate_grand_order_cn
-
         fgo_cn = fate_grand_order_cn.FateGrandOrder()
-        fgo_cn.run_task()
+        game_list.append(fgo_cn)
+    # Execute scripts.
+    for game in game_list:
+        game.speed = args.speed
+        game.run_task(task=args.task, special_task=args.special_task)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-debug", "--debug", action="store_true", help="Turn on debug mode.")
+    parser.add_argument("-g", "--game", type=str, nargs="+", help="Game name. e.g. arknights_cn, honkai_impact_3_cn, fate_grand_order_cn, princess_connect_re_dive_cn")
+    parser.add_argument("-s", "--speed", type=int, default=1, help="Waiting speed, the default speed is 1x. The bigger the number, the slower the speed and the higher the stability.")
+    parser.add_argument("-t", "--task", type=str, nargs="+", help="Tasks for different games. Please refer to the \"README.md\" for details.")
+    parser.add_argument("-st", "--special_task", type=str, nargs="+", help="Special tasks for different games. Please refer to the \"README.md\" for details.")
+    args = parser.parse_args()
+
+    main(args)

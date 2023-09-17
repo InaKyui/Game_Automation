@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : coordinate.py
-[Time]        : 2023/09/10 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Class coorndinate.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
 import time
 import random
@@ -50,10 +50,11 @@ class Coordinate:
 
         return self.__dict__
 
-    def click(self):
+    def click(self, wait_time:int=None):
         """
             Click based on class attributes.
         """
+
         resolution = device().get_current_resolution()
 
         x = int(self.x * resolution[0])
@@ -75,6 +76,10 @@ class Coordinate:
         # Idle.
         # print_message("Success", "Wait {0} seconds".format(str(actual_time / 10)))
         time.sleep(actual_time / 10)
+        # Fine-tuning of time to actual conditions.
+        if wait_time:
+            # print_message("Success", "Wait {0} seconds".format(str(wait_time)))
+            time.sleep(wait_time)
 
     def get_click_area(self) -> List[int]:
         """

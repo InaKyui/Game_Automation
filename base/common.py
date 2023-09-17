@@ -2,21 +2,22 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : common.py
-[Time]        : 2023/09/10 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Common methods.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
 import os
+import cv2
 import json
 import time
 import numpy as np
-import pytesseract
+from paddleocr import PaddleOCR
 from functools import wraps
 
 def print_message(status:str, message:str):
@@ -35,8 +36,15 @@ def image_to_string(img: np.ndarray) -> str:
     """
         Text recognition.
     """
-    text = pytesseract.image_to_string(img, lang='chi_sim')
-    return text.strip()
+
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, dst = cv2.threshold(gray_img, 200, 255, cv2.THRESH_BINARY)
+    ocr = PaddleOCR(use_angle_cls=True, use_gpu=False, show_log=False, lang="ch")
+    text = ocr.ocr(dst, cls=True)
+    try:
+        return text[0][0][1][0]
+    except:
+        return None
 
 
 def path_exists(path:str):

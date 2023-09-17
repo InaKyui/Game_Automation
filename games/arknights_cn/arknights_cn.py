@@ -2,20 +2,17 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : arknights.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Arknights project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
-import os
 import re
-import time
-import numpy as np
 import requests
 from base.game import Game
 from base.task import Task
@@ -31,6 +28,11 @@ class Arknights(Game):
         # Define game attribute.
         self.package_name = "com.hypergryph.arknights"
         self.resolution = (1920, 1080)
+        # Recruit information.
+        self.recruit_info = {
+            "tags": [],
+            "operators": {}
+        }
 
         self.__event_quest = False
 
@@ -63,119 +65,119 @@ class Arknights(Game):
                                      round(165/rcr_rsl[1], 4),
                                      round(3/rcr_rsl[0], 4),
                                      round(3/rcr_rsl[1], 4),
-                                     5).get_coordinate_dict()
+                                     1.5).get_coordinate_dict()
             },
             {
                 "trade_a": Coordinate(round(65/rcr_rsl[0], 4),
                                       round(310/rcr_rsl[1], 4),
                                       round(3/rcr_rsl[0], 4),
                                       round(3/rcr_rsl[1], 4),
-                                      5).get_coordinate_dict()
+                                      1.5).get_coordinate_dict()
             },
             {
                 "trade_b": Coordinate(round(280/rcr_rsl[0], 4),
                                       round(310/rcr_rsl[1], 4),
                                       round(3/rcr_rsl[0], 4),
                                       round(3/rcr_rsl[1], 4),
-                                      5).get_coordinate_dict()
+                                      1.5).get_coordinate_dict()
             },
             {
                 "manufacture_a": Coordinate(round(495/rcr_rsl[0], 4),
                                             round(310/rcr_rsl[1], 4),
                                             round(3/rcr_rsl[0], 4),
                                             round(3/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1.5).get_coordinate_dict()
             },
             {
                 "manufacture_b": Coordinate(round(65/rcr_rsl[0], 4),
                                             round(520/rcr_rsl[1], 4),
                                             round(3/rcr_rsl[0], 4),
                                             round(3/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1.5).get_coordinate_dict()
             },
             {
                 "manufacture_c": Coordinate(round(280/rcr_rsl[0], 4),
                                             round(520/rcr_rsl[1], 4),
                                             round(3/rcr_rsl[0], 4),
                                             round(3/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1.5).get_coordinate_dict()
             },
             {
                 "manufacture_d": Coordinate(round(495/rcr_rsl[0], 4),
                                             round(520/rcr_rsl[1], 4),
                                             round(3/rcr_rsl[0], 4),
                                             round(3/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1.5).get_coordinate_dict()
             },
             {
                 "dormitory_a": Coordinate(round(800/rcr_rsl[0], 4),
                                           round(310/rcr_rsl[1], 4),
                                           round(3/rcr_rsl[0], 4),
                                           round(3/rcr_rsl[1], 4),
-                                          5).get_coordinate_dict()
+                                          1.5).get_coordinate_dict()
             },
             {
                 "dormitory_b": Coordinate(round(915/rcr_rsl[0], 4),
                                          round(415/rcr_rsl[1], 4),
                                          round(3/rcr_rsl[0], 4),
                                          round(3/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         1.5).get_coordinate_dict()
             },
             {
                 "dormitory_c": Coordinate(round(800/rcr_rsl[0], 4),
                                          round(520/rcr_rsl[1], 4),
                                          round(3/rcr_rsl[0], 4),
                                          round(3/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         1.5).get_coordinate_dict()
             },
             {
                 "dormitory_d": Coordinate(round(915/rcr_rsl[0], 4),
                                          round(625/rcr_rsl[1], 4),
                                          round(3/rcr_rsl[0], 4),
                                          round(3/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         1.5).get_coordinate_dict()
             },
             {
                 "office": Coordinate(round(1265/rcr_rsl[0], 4),
                                      round(415/rcr_rsl[1], 4),
                                      round(3/rcr_rsl[0], 4),
                                      round(3/rcr_rsl[1], 4),
-                                     5).get_coordinate_dict()
+                                     1.5).get_coordinate_dict()
             },
             {
                 "first_operator": Coordinate(round(485/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             1.5).get_coordinate_dict()
+                                             0.5).get_coordinate_dict()
             },
             {
                 "second_operator": Coordinate(round(485/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              1.5).get_coordinate_dict()
+                                              0.5).get_coordinate_dict()
             },
             {
                 "third_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             1.5).get_coordinate_dict()
+                                             0.5).get_coordinate_dict()
             },
             {
                 "fourth_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              1.5).get_coordinate_dict()
+                                              0.5).get_coordinate_dict()
             },
             {
                 "fifth_operator": Coordinate(round(765/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             1.5).get_coordinate_dict()
+                                             0.5).get_coordinate_dict()
             },
         ]
         task = Task(task_name, task_coordinates)
@@ -190,7 +192,7 @@ class Arknights(Game):
                                          round(580/rcr_rsl[1], 4),
                                          round(5/rcr_rsl[0], 4),
                                          round(5/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         3).get_coordinate_dict()
             }
         ]
         task = Task(task_name, task_coordinates)
@@ -211,77 +213,77 @@ class Arknights(Game):
                                          round(300/rcr_rsl[1], 4),
                                          round(5/rcr_rsl[0], 4),
                                          round(5/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         3).get_coordinate_dict()
             },
             {
                 "first_archive": Coordinate(round(325/rcr_rsl[0], 4),
                                             round(290/rcr_rsl[1], 4),
                                             round(5/rcr_rsl[0], 4),
                                             round(5/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1).get_coordinate_dict()
             },
             {
                 "second_archive": Coordinate(round(955/rcr_rsl[0], 4),
                                              round(290/rcr_rsl[1], 4),
                                              round(5/rcr_rsl[0], 4),
                                              round(5/rcr_rsl[1], 4),
-                                             5).get_coordinate_dict()
+                                             1).get_coordinate_dict()
             },
             {
                 "third_archive": Coordinate(round(325/rcr_rsl[0], 4),
                                             round(570/rcr_rsl[1], 4),
                                             round(5/rcr_rsl[0], 4),
                                             round(5/rcr_rsl[1], 4),
-                                            5).get_coordinate_dict()
+                                            1).get_coordinate_dict()
             },
             {
                 "fourth_archive": Coordinate(round(955/rcr_rsl[0], 4),
                                              round(570/rcr_rsl[1], 4),
                                              round(5/rcr_rsl[0], 4),
                                              round(5/rcr_rsl[1], 4),
-                                             5).get_coordinate_dict()
+                                             1).get_coordinate_dict()
             },
             {
                 "first_tag": Coordinate(round(450/rcr_rsl[0], 4),
                                         round(385/rcr_rsl[1], 4),
                                         round(60/rcr_rsl[0], 4),
-                                        round(15/rcr_rsl[1], 4),
-                                        5).get_coordinate_dict()
+                                        round(20/rcr_rsl[1], 4),
+                                        0.5).get_coordinate_dict()
             },
             {
                 "second_tag": Coordinate(round(615/rcr_rsl[0], 4),
                                          round(385/rcr_rsl[1], 4),
                                          round(60/rcr_rsl[0], 4),
-                                         round(15/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         round(20/rcr_rsl[1], 4),
+                                         0.5).get_coordinate_dict()
             },
             {
                 "third_tag": Coordinate(round(780/rcr_rsl[0], 4),
                                         round(385/rcr_rsl[1], 4),
                                         round(60/rcr_rsl[0], 4),
-                                        round(15/rcr_rsl[1], 4),
-                                        5).get_coordinate_dict()
+                                        round(20/rcr_rsl[1], 4),
+                                        0.5).get_coordinate_dict()
             },
             {
                 "fourth_tag": Coordinate(round(450/rcr_rsl[0], 4),
                                          round(455/rcr_rsl[1], 4),
                                          round(60/rcr_rsl[0], 4),
-                                         round(15/rcr_rsl[1], 4),
-                                         5).get_coordinate_dict()
+                                         round(20/rcr_rsl[1], 4),
+                                         0.5).get_coordinate_dict()
             },
             {
                 "fifth_tag": Coordinate(round(615/rcr_rsl[0], 4),
                                         round(455/rcr_rsl[1], 4),
                                         round(60/rcr_rsl[0], 4),
-                                        round(15/rcr_rsl[1], 4),
-                                        5).get_coordinate_dict()
+                                        round(20/rcr_rsl[1], 4),
+                                        0.5).get_coordinate_dict()
             },
             {
                 "max_time": Coordinate(round(450/rcr_rsl[0], 4),
                                        round(295/rcr_rsl[1], 4),
                                        round(3/rcr_rsl[0], 4),
                                        round(3/rcr_rsl[1], 4),
-                                       5).get_coordinate_dict()
+                                       0.5).get_coordinate_dict()
             },
         ]
         task = Task(task_name, task_coordinates)
@@ -293,63 +295,56 @@ class Arknights(Game):
         task = Task(task_name)
         self.tasks[task_mode].append(task)
 
+    def __back_homepage(self):
+        """
+            Back to the home page.
+        """
+
+        for _ in range(5):
+            if self.exists("button_back"):
+                self.touch("button_back", 1.5)
+            else:
+                break
+
     @task_log
     def __task_login(self):
         # Game updates will cause the program error.
-        wait(self.get_image("login_start.png"), timeout=360, interval=15)
-        time.sleep(1)
-        touch(self.get_image("login_start.png"))
-        time.sleep(7)
-        touch(self.get_image("login_enter.png"))
-        time.sleep(30)
-        if exists(self.get_image("login_rewards.png")):
+        self.wait("login_start", timeout=300, interval=10)
+        self.touch("login_start", 5)
+        self.touch("login_enter", 30)
+        if self.exists("login_rewards"):
             # Receive login rewards
-            touch(self.get_image("login_rewards.png"))
-            time.sleep(3)
+            self.touch("login_rewards", 1.5)
         # Close event announcement.
-        for i in range(5):
-            if exists(self.get_image("login_close.png")):
-                touch(self.get_image("login_close.png"))
-                time.sleep(3)
+        for _ in range(5):
+            if self.exists("login_close"):
+                self.touch("login_close", 3)
             else:
                 break
 
     @task_log
     def __task_source_center(self):
-        touch(self.get_image("menu_source_center.png"))
-        time.sleep(3)
-        touch(self.get_image("source_exchange.png"))
-        time.sleep(1.5)
-        touch(self.get_image("source_harvest.png"))
-        time.sleep(1.5)
-        touch(self.get_image("source_receive.png"))
-        time.sleep(3)
-        # Exchange item.
-
-        # Back to the home page.
-        for i in range(5):
-            if exists(self.get_image("button_back.png")):
-                touch(self.get_image("button_back.png"))
-                time.sleep(3)
-            else:
-                break
+        self.touch("menu_source_center")
+        self.touch("source_exchange")
+        self.touch("source_harvest")
+        self.touch("source_receive")
+        # TODO Exchange item.
+        self.__back_homepage()
 
     def __change_operator(self, room:str):
         task = self.get_task("infrastructure")
-        task.coordinates[room].click()
-        time.sleep(5)
+        for _ in range(3):
+            task.coordinates[room].click()
+            if self.exists("operator_info"):
+                break
         # Release the operator.
-        if not exists(self.get_image("operator_release.png")):
-            touch(self.get_image("operator_info.png"))
-            time.sleep(3)
-        touch(self.get_image("operator_release.png"))
-        time.sleep(1.5)
-        if exists(self.get_image("button_ensure.png")):
-            touch(self.get_image("button_ensure.png"))
-            time.sleep(3)
+        if not self.exists("operator_release"):
+            self.touch("operator_info")
+        self.touch("operator_release")
+        if self.exists("button_ensure"):
+            self.touch("button_ensure")
         # Deploy the operator.
-        touch(self.get_image("operator_deploy.png"))
-        time.sleep(3)
+        self.touch("operator_deploy")
         operator_count = {
             "center": 5,
             "trade_a": 3,
@@ -368,52 +363,35 @@ class Arknights(Game):
 
         if operator_count[room] >= 1:
             task.coordinates["first_operator"].click()
-            time.sleep(1)
         if operator_count[room] >= 2:
             task.coordinates["second_operator"].click()
-            time.sleep(1)
         if operator_count[room] >= 3:
             task.coordinates["third_operator"].click()
-            time.sleep(1)
         if operator_count[room] >= 4:
             task.coordinates["fourth_operator"].click()
-            time.sleep(1)
         if operator_count[room] >= 5:
             task.coordinates["fifth_operator"].click()
-            time.sleep(1)
-        time.sleep(3)
-        touch(self.get_image("operator_confirm.png"))
-        time.sleep(5)
-        if exists(self.get_image("operator_double_confirm.png")):
-            touch(self.get_image("operator_double_confirm.png"))
-            time.sleep(5)
-        # Back to home page.
-        if exists(self.get_image("button_back.png")):
-            touch(self.get_image("button_back.png"))
-            time.sleep(3)
+        self.touch("operator_confirm")
+        if self.exists("operator_double_confirm"):
+            self.touch("operator_double_confirm")
+        if self.exists("button_back"):
+            self.touch("button_back", 1.5)
 
     @task_log
     def __task_infrastructure(self):
-        touch(self.get_image("menu_infrastructure.png"))
-        time.sleep(5)
-        if exists(self.get_image("infrastructure_notification.png")):
-            touch(self.get_image("infrastructure_notification.png"))
-            time.sleep(3)
-            if exists(self.get_image("infrastructure_resource.png")):
-                touch(self.get_image("infrastructure_resource.png"))
-                time.sleep(1.5)
-            if exists(self.get_image("infrastructure_coin.png")):
-                touch(self.get_image("infrastructure_coin.png"))
-                time.sleep(1.5)
-            if exists(self.get_image("infrastructure_trust.png")):
-                touch(self.get_image("infrastructure_trust.png"))
-                time.sleep(1.5)
-            if exists(self.get_image("infrastructure_to_do.png")):
-                touch(self.get_image("infrastructure_to_do.png"))
-                time.sleep(3)
+        self.touch("menu_infrastructure", 3)
+        if self.exists("infrastructure_notification"):
+            self.touch("infrastructure_notification")
+            if self.exists("infrastructure_resource"):
+                self.touch("infrastructure_resource")
+            if self.exists("infrastructure_coin"):
+                self.touch("infrastructure_coin")
+            if self.exists("infrastructure_trust"):
+                self.touch("infrastructure_trust")
+            if self.exists("infrastructure_to_do"):
+                self.touch("infrastructure_to_do")
         # Center.
-        touch(self.get_image("infrastructure_center.png"))
-        time.sleep(5)
+        self.touch("infrastructure_center")
         self.__change_operator("center")
         # Trading - A.
         self.__change_operator("trade_a")
@@ -437,103 +415,64 @@ class Arknights(Game):
         self.__change_operator("dormitory_d")
         # Office.
         self.__change_operator("office")
-        # Back to the home page.
-        for i in range(5):
-            if exists(self.get_image("button_back.png")):
-                touch(self.get_image("button_back.png"))
-                time.sleep(3)
-            else:
-                break
+        self.__back_homepage()
 
     @task_log
     def __task_event_quest(self):
         task = self.get_task("event_quest")
         try:
-            touch(self.get_image("menu_terminal.png"))
-            time.sleep(5)
+            self.touch("menu_terminal", 1.5)
             # Last quest.
             task.coordinates["last_quest"].click()
-            time.sleep(3)
-            for i in range(100):
-                touch(self.get_image("quest_formation.png"))
-                time.sleep(3)
-                if exists(self.get_image("quest_break.png")):
-                    touch(self.get_image("quest_cancel.png"))
-                    time.sleep(5)
+            for _ in range(100):
+                self.touch("quest_formation", 1.5)
+                if self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
+                    self.touch("quest_cancel")
                     break
-                touch(self.get_image("quest_start.png"))
-                time.sleep(10)
-                wait(self.get_image("quest_finish.png"), timeout=360, interval=15)
-                time.sleep(5)
-                touch(self.get_image("quest_finish.png"))
-                time.sleep(5)
+                self.touch("quest_start")
+                try:
+                    self.wait("quest_finish", timeout=300, interval=10)
+                except:
+                    if self.exists("quest_level_up"):
+                        self.touch("quest_level_up", 1.5)
+                self.touch("quest_finish", 3)
             self.__event_quest = True
         except Exception as e:
             print_message("Error", "Some errors have occurred in the event quest.")
             print_message("Error", str(e))
             print_message("Error", repr(e))
         finally:
-            # Back to the home page.
-            for i in range(5):
-                if exists(self.get_image("button_back.png")):
-                    touch(self.get_image("button_back.png"))
-                    time.sleep(3)
-                else:
-                    break
+            self.__back_homepage()
+
 
     @task_log
     def __task_daily_quest(self):
         # Determine if event quests have been completed.
         if self.__event_quest == False:
-            touch(self.get_image("menu_terminal.png"))
-            time.sleep(5)
-            touch(self.get_image("daily_page.png"))
-            time.sleep(1.5)
+            self.touch("menu_terminal", 1.5)
+            self.touch("daily_page", 1.5)
             # Coin quest.
-            if exists(self.get_image("daily_coin.png")):
-                touch(self.get_image("daily_coin.png"))
-                time.sleep(3)
-                touch(self.get_image("daily_coin_ce_6.png"))
-                time.sleep(3)
-                for i in range(100):
-                    touch(self.get_image("quest_formation.png"))
-                    time.sleep(3)
-                    if exists(self.get_image("quest_break.png")):
-                        touch(self.get_image("quest_cancel.png"))
-                        time.sleep(5)
-                        break
-                    touch(self.get_image("quest_start.png"))
-                    time.sleep(10)
-                    wait(self.get_image("quest_finish.png"), timeout=360, interval=15)
-                    time.sleep(1.5)
-                    touch(self.get_image("quest_finish.png"))
-                    time.sleep(5)
+            if self.exists("daily_coin"):
+                self.touch("daily_coin", 1.5)
+                self.touch("daily_coin_ce_6", 1.5)
             # Exp quest.
-            elif exists(self.get_image("daily_exp.png")):
-                touch(self.get_image("daily_exp.png"))
-                time.sleep(3)
-                touch(self.get_image("daily_exp_ls_6.png"))
-                time.sleep(3)
-                for i in range(100):
-                    touch(self.get_image("quest_formation.png"))
-                    time.sleep(3)
-                    if exists(self.get_image("quest_break.png")):
-                        touch(self.get_image("quest_cancel.png"))
-                        time.sleep(5)
-                        break
-                    touch(self.get_image("quest_start.png"))
-                    time.sleep(10)
-                    wait(self.get_image("quest_finish.png"), timeout=360, interval=15)
-                    time.sleep(1.5)
-                    touch(self.get_image("quest_finish.png"))
-                    time.sleep(5)
-            # Back to the home page.
-            for i in range(5):
-                if exists(self.get_image("button_back.png")):
-                    touch(self.get_image("button_back.png"))
-                    time.sleep(3)
-                else:
+            elif self.exists("daily_exp"):
+                self.touch("daily_exp", 1.5)
+                self.touch("daily_exp_ls_6", 1.5)
+
+            for _ in range(100):
+                self.touch("quest_formation", 1.5)
+                if self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
+                    self.touch("quest_cancel")
                     break
+                self.touch("quest_start")
+                try:
+                    self.wait("quest_finish", timeout=300, interval=10)
+                except:
+                    if self.exists("quest_level_up"):
+                        self.touch("quest_level_up", 1.5)
+                self.touch("quest_finish", 3)
+            self.__back_homepage()
 
     def get_operators(self) -> Tuple[List[str], List[dict]]:
         """
@@ -542,7 +481,6 @@ class Arknights(Game):
 
         tags = []
         operators = []
-
         session = requests.Session()
         headers = {
                     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
@@ -550,7 +488,6 @@ class Arknights(Game):
                 }
         official_website = r"https://prts.wiki/w/%E5%B9%B2%E5%91%98%E4%B8%80%E8%A7%88"
         rsp = session.get(url=official_website, headers=headers, verify=False)
-
         # Get operators information by regularizing the response text.
         data_ptn = re.compile("data-zh=.*? data-group=\".*?\"")
         operator_property = data_ptn.findall(rsp.text)
@@ -586,7 +523,8 @@ class Arknights(Game):
         """
 
         # Get the list of all tags and operators information.
-        tags, operators = self.get_operators()
+        if self.recruit_info["tags"] == [] and self.recruit_info["operators"] == {}:
+            self.recruit_info["tags"], self.recruit_info["operators"] = self.get_operators()
         # Initialize tag information.
         tags_info = [
             { "name": "first_tag",
@@ -612,7 +550,7 @@ class Arknights(Game):
             # Crop tag area.
             tag_image = aircv.crop_image(screen, ti["rectangle"])
             tag_content = image_to_string(tag_image)
-            if tag_content in tags:
+            if tag_content in self.recruit_info["tags"]:
                 ti["content"] = tag_content
 
         # Get all possible combinations.
@@ -626,7 +564,7 @@ class Arknights(Game):
 
         scoring_sheet = {}
         for tc in tag_combo:
-            for operator in operators:
+            for operator in self.recruit_info["operators"]:
                 if all(tct in operator["tag"] for tct in tc):
                     if ",".join(tc) not in scoring_sheet.keys():
                         scoring_sheet[",".join(tc)] = [operator["rarity"]]
@@ -638,39 +576,29 @@ class Arknights(Game):
             scoring_sheet[ssk] = round(len([x for x in scoring_sheet[ssk] if x > 3 or x == 1]) / len(scoring_sheet[ssk]) , 4) * 100
         # Sort tag combinations by probability.
         target_tag = sorted(scoring_sheet.items(), key=lambda x:x[1])[-1][0].split(",")
+        print(target_tag)
         for ti in tags_info:
             if ti["content"] in target_tag:
                 coordinates[ti["name"]].click()
 
-    @task_log
-    def __task_recruit_center(self):
-        task = self.get_task("recruit_center")
-
-        touch(self.get_image("menu_recruit.png"))
-        time.sleep(5)
-
+    def __recruit(self, task):
         # Check whether acceleration is required.
-        for i in range(4):
-            if exists(self.get_image("recruit_accelerate.png")):
-                touch(self.get_image("recruit_accelerate.png"))
-                time.sleep(1.5)
-                if exists(self.get_image("button_ensure.png")):
-                    touch(self.get_image("button_ensure.png"))
-                    time.sleep(3)
+        for _ in range(4):
+            if self.exists("recruit_accelerate"):
+                self.touch("recruit_accelerate")
+                if self.exists("button_ensure"):
+                    self.touch("button_ensure")
                 else:
                     break
             else:
                 break
 
         # Recruit the operator.
-        for i in range(4):
-            if exists(self.get_image("recruit_complete.png")):
-                touch(self.get_image("recruit_complete.png"))
-                time.sleep(5)
-                touch(self.get_image("button_skip.png"))
-                time.sleep(7)
+        for _ in range(4):
+            if self.exists("recruit_complete"):
+                self.touch("recruit_complete", 5)
+                self.touch("button_skip", 3)
                 task.coordinates["blank_area"].click()
-                time.sleep(3)
             else:
                 break
 
@@ -678,36 +606,34 @@ class Arknights(Game):
         index = ["first", "second", "third", "fourth"]
         for i in range(len(index)):
             task.coordinates["{0}_archive".format(index[i])].click()
-            time.sleep(1)
             # Human-operated recruitment of six-star operator.
-            if exists(self.get_image("recruit_tag_top_senior.png")):
-                touch(self.get_image("button_back.png"))
-                time.sleep(3)
+            if self.exists("recruit_tag_top_senior"):
+                self.touch("button_back", 1.5)
                 continue
             else:
                 task.coordinates["max_time"].click()
-                time.sleep(1.5)
                 self.__recruit_tag(task.coordinates)
-                time.sleep(3)
-                touch(self.get_image("recruit_ensure.png"))
-                time.sleep(1.5)
+                self.touch("recruit_ensure")
 
-        # Back to the home page.
-        for i in range(5):
-            if exists(self.get_image("button_back.png")):
-                touch(self.get_image("button_back.png"))
-                time.sleep(3)
-            else:
-                break
+    @task_log
+    def __task_recruit_center(self):
+        task = self.get_task("recruit_center")
+        self.touch("menu_recruit", 3)
+        self.__recruit(task)
+        self.__back_homepage()
 
     @task_log
     def __task_complete(self):
-        touch(self.get_image("menu_task.png"))
-        time.sleep(3)
-        touch(self.get_image("task_receive.png"))
-        time.sleep(1)
+        self.touch("menu_task", 1.5)
+        self.touch("task_receive")
 
-    def run_task(self):
+    def __special_task_recruit(self):
+        task = self.get_task("recruit_center")
+        for _ in range(100):
+            self.__recruit(task)
+
+    def run_task(self, task:List[str]=None, special_task:List[str]=None):
+        # Collection of tasks and special tasks.
         switch_tasks  = {
             "login": self.__task_login,
             "source_center": self.__task_source_center,
@@ -715,7 +641,17 @@ class Arknights(Game):
             "event_quest": self.__task_event_quest,
             "daily_quest": self.__task_daily_quest,
             "recruit_center": self.__task_recruit_center,
-            "complete": self.__task_complete
+            "complete": self.__task_complete,
+            "[special]recruit": self.__special_task_recruit
         }
 
-        self.task_process(switch_tasks)
+        if task:
+            self.task_init()
+            for t in task:
+                switch_tasks.get(t)()
+        elif special_task:
+            self.task_init()
+            for st in special_task:
+                switch_tasks.get("[special]" + st)()
+        else:
+            self.task_process(switch_tasks)

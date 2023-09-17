@@ -2,18 +2,16 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : honkai_impact_3_cn.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/09/17 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.5
 [Description] : Honkai Impact 3 project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.5"
 
-import os
-import time
 from base.game import Game
 from base.task import Task
 from base.common import *
@@ -41,7 +39,7 @@ class HonkaiImpact3(Game):
         task = Task(task_name)
         self.tasks[task_mode].append(task)
 
-        # Receive_energy.
+        # Receive energy.
         task_name = "energy"
         task_mode = "start_task"
         task_coordinates = [
@@ -108,7 +106,7 @@ class HonkaiImpact3(Game):
                                              round(1000/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             3).get_coordinate_dict()
+                                             1.5).get_coordinate_dict()
             }
         ]
         task = Task(task_name, task_coordinates)
@@ -116,187 +114,129 @@ class HonkaiImpact3(Game):
 
     @task_log
     def __task_login(self):
-        time.sleep(15)
-        if exists(self.get_image("button_confirm.png")):
-            touch(self.get_image("button_confirm.png"))
-            time.sleep(1)
-            wait(self.get_image("button_confirm.png"), timeout=360, interval=15)
-            time.sleep(1)
-            touch(self.get_image("button_confirm.png"))
-            time.sleep(15)
-        wait(self.get_image("login_tip.png"), timeout=360, interval=15)
-        time.sleep(1)
-        touch(self.get_image("login_tip.png"))
-        time.sleep(30)
-        for i in range(5):
-            if exists(self.get_image("login_receive.png")):
-                touch(self.get_image("login_receive.png"))
-                time.sleep(3)
-                touch(self.get_image("button_confirm.png"))
-                time.sleep(3)
+        if self.exists("button_confirm"):
+            self.touch("button_confirm")
+            self.wait("button_confirm", timeout=600, interval=10)
+            self.touch("button_confirm")
+        self.wait("login_tip", timeout=300, interval=10)
+        self.touch("login_tip", 30)
+        for _ in range(5):
+            if self.exists("login_receive"):
+                self.touch("login_receive", 3)
+                # TODO Check actual situation.
+                if self.exists("button_confirm"):
+                    self.touch("button_confirm", 3)
             else:
                 break
-        if exists(self.get_image("login_abyss.png")):
-            touch(self.get_image("login_abyss.png"))
-            time.sleep(5)
-        for i in range(3):
-            if exists(self.get_image("button_close.png")):
-                touch(self.get_image("button_close.png"))
-                time.sleep(3)
+        if self.exists("login_abyss"):
+            self.touch("login_abyss", 3)
+        for _ in range(3):
+            if self.exists("button_close"):
+                self.touch("button_close", 1.5)
             else:
                 break
 
     @task_log
     def __task_energy(self):
         task = self.get_task("energy")
-        touch(self.get_image("menu_task.png"))
-        time.sleep(5)
+        self.touch("menu_task", 3)
         task.coordinates["task_page"].click()
-        touch(self.get_image("button_receive.png"))
-        time.sleep(3)
-        touch(self.get_image("button_confirm.png"))
-        time.sleep(1.5)
-        touch(self.get_image("button_back.png"))
-        time.sleep(5)
+        self.touch("button_receive", 1.5)
+        self.touch("button_confirm", 1)
+        self.touch("button_back", 3)
 
     @task_log
     def __task_home(self):
         task = self.get_task("home")
-        touch(self.get_image("menu_home.png"))
-        time.sleep(7)
-        touch(self.get_image("home_coin.png"))
-        time.sleep(5)
-        touch(self.get_image("home_quest.png"))
-        time.sleep(3)
-        touch(self.get_image("home_expand.png"))
-        time.sleep(3)
-        for i in range(10):
-            if exists(self.get_image("home_quest_complete.png")):
-                touch(self.get_image("home_quest_complete.png"))
-                time.sleep(1.5)
-                touch(self.get_image("button_confirm.png"))
-                time.sleep(3)
+        self.touch("menu_home", 5)
+        self.touch("home_coin", 3)
+        self.touch("home_quest", 1.5)
+        self.touch("home_expand")
+        for _ in range(10):
+            if self.exists("home_quest_complete"):
+                self.touch("home_quest_complete")
+                self.touch("button_confirm", 1.5)
             else:
                 break
-        for i in range(10):
+        for _ in range(10):
             task.coordinates["new_quest"].click()
-            if exists(self.get_image("home_dispatch.png")):
-                touch(self.get_image("home_dispatch.png"))
-                time.sleep(1.5)
-                touch(self.get_image("home_quest_start.png"))
-                time.sleep(3)
-                if exists(self.get_image("home_dispatch.png")):
-                    touch(self.get_image("button_back.png"))
-                    time.sleep(3)
+            if self.exists("home_dispatch"):
+                self.touch("home_dispatch")
+                self.touch("home_quest_start")
+                if self.exists("home_dispatch"):
+                    self.touch("button_back", 1.3)
                     break
             else:
                 break
-        touch(self.get_image("button_back.png"))
-        time.sleep(5)
-        touch(self.get_image("home_story_sweep.png"))
-        time.sleep(3)
-        if exists(self.get_image("home_story_sweep_complete.png")):
-            touch(self.get_image("home_story_sweep_complete.png"))
-            time.sleep(1.5)
-            touch(self.get_image("button_confirm.png"))
-            time.sleep(3)
-        for i in range(3):
-            if exists(self.get_image("home_story_sweep_start.png")):
-                touch(self.get_image("home_story_sweep_start.png"))
-                time.sleep(1.5)
-                touch(self.get_image("home_dispatch.png"))
-                time.sleep(1.5)
-                touch(self.get_image("home_story_sweep_confirm.png"))
-                time.sleep(3)
-                if exists(self.get_image("home_dispatch.png")):
-                    touch(self.get_image("button_back.png"))
-                    time.sleep(3)
+        self.touch("button_back", 3)
+        self.touch("home_story_sweep", 1.5)
+        if self.exists("home_story_sweep_complete"):
+            self.touch("home_story_sweep_complete", 1.5)
+            self.touch("button_confirm", 1.5)
+        for _ in range(3):
+            if self.exists("home_story_sweep_start"):
+                self.touch("home_story_sweep_start", 1.5)
+                self.touch("home_dispatch", 1.5)
+                self.touch("home_story_sweep_confirm", 1.5)
+                if self.exists("home_dispatch"):
+                    self.touch("button_back", 1.5)
                     break
-        touch(self.get_image("home_resource.png"))
-        time.sleep(3)
-        if exists(self.get_image("home_story_sweep_complete.png")):
-            touch(self.get_image("home_story_sweep_complete.png"))
-            time.sleep(1.5)
-            touch(self.get_image("button_confirm.png"))
-            time.sleep(3)
-        for i in range(3):
-            if exists(self.get_image("home_story_sweep_start.png")):
-                touch(self.get_image("home_story_sweep_start.png"))
-                time.sleep(1.5)
-                touch(self.get_image("home_dispatch.png"))
-                time.sleep(1.5)
-                touch(self.get_image("home_story_sweep_confirm.png"))
-                time.sleep(3)
-                if exists(self.get_image("home_dispatch.png")):
-                    touch(self.get_image("button_back.png"))
-                    time.sleep(5)
+        self.touch("home_resource")
+        if self.exists("home_story_sweep_complete"):
+            self.touch("home_story_sweep_complete", 1.5)
+            self.touch("button_confirm", 1.5)
+        for _ in range(3):
+            if self.exists("home_story_sweep_start"):
+                self.touch("home_story_sweep_start", 1.5)
+                self.touch("home_dispatch", 1.5)
+                self.touch("home_story_sweep_confirm", 1.5)
+                if self.exists("home_dispatch"):
+                    self.touch("button_back", 1.5)
                     break
-        touch(self.get_image("button_main.png"))
-        time.sleep(5)
+        self.touch("button_main", 1.5)
 
     @task_log
     def __task_fleet(self):
-        touch(self.get_image("menu_fleet.png"))
-        time.sleep(5)
-        touch(self.get_image("fleet_task.png"))
-        time.sleep(3)
-        touch(self.get_image("fleet_apply.png"))
-        time.sleep(3)
-        touch(self.get_image("fleet_accept.png"))
-        time.sleep(3)
-        for i in range(8):
-            if exists(self.get_image("fleet_submit.png")):
-                touch(self.get_image("fleet_submit.png"))
-                time.sleep(3)
-                touch(self.get_image("fleet_double_submit.png"))
-                time.sleep(3)
-                touch(self.get_image("fleet_put.png"))
-                time.sleep(5)
+        self.touch("menu_fleet", 3)
+        self.touch("fleet_task")
+        self.touch("fleet_apply")
+        self.touch("fleet_accept")
+        for _ in range(8):
+            if self.exists("fleet_submit"):
+                self.touch("fleet_submit")
+                self.touch("fleet_double_submit")
+                self.touch("fleet_put")
             else:
                 break
-        touch(self.get_image("fleet_bonus.png"))
-        time.sleep(3)
-        touch(self.get_image("fleet_receive.png"))
-        time.sleep(3)
-        touch(self.get_image("button_confirm.png"))
-        time.sleep(5)
-        touch(self.get_image("button_main.png"))
-        time.sleep(5)
+        self.touch("fleet_bonus")
+        self.touch("fleet_receive")
+        self.touch("button_confirm")
+        self.touch("button_main", 1.5)
 
     @task_log
     def __task_quest(self):
         task = self.get_task("quest")
-        touch(self.get_image("menu_quest.png"))
-        time.sleep(5)
-        if not exists(self.get_image("quest_resource.png")):
+        self.touch("menu_quest", 1.5)
+        if not self.exists("quest_resource"):
             task.coordinates["attack_button"].click()
-        touch(self.get_image("quest_resource.png"))
-        time.sleep(3)
-        touch(self.get_image("quest_event.png"))
-        time.sleep(3)
-        touch(self.get_image("quest_confirm.png"))
-        time.sleep(3)
-        touch(self.get_image("button_confirm.png"))
-        time.sleep(1.5)
-        touch(self.get_image("button_main.png"))
-        time.sleep(5)
+        self.touch("quest_resource")
+        self.touch("quest_event")
+        self.touch("quest_confirm", 1.5)
+        self.touch("button_confirm")
+        self.touch("button_main", 1.5)
 
     @task_log
     def __task_complete(self):
         task = self.get_task("complete")
-        touch(self.get_image("menu_task.png"))
-        time.sleep(5)
+        self.touch("menu_task", 1.5)
         task.coordinates["task_page"].click()
-        touch(self.get_image("button_receive.png"))
-        time.sleep(3)
-        touch(self.get_image("button_confirm.png"))
-        time.sleep(1.5)
+        self.touch("button_receive")
+        self.touch("button_confirm")
         task.coordinates["daily_resource"].click()
-        touch(self.get_image("button_confirm.png"))
-        time.sleep(1.5)
+        self.touch("button_confirm")
 
-
-    def run_task(self):
+    def run_task(self, task:str=None, special_task:str=None):
+        # Collection of tasks and special tasks.
         switch_tasks  = {
             "login": self.__task_login,
             "energy": self.__task_energy,
@@ -306,4 +246,13 @@ class HonkaiImpact3(Game):
             "complete": self.__task_complete
         }
 
-        self.task_process(switch_tasks)
+        if task:
+            self.task_init()
+            for t in task:
+                switch_tasks.get(t)()
+        elif special_task:
+            self.task_init()
+            for st in special_task:
+                switch_tasks.get("[special]" + st)()
+        else:
+            self.task_process(switch_tasks)
