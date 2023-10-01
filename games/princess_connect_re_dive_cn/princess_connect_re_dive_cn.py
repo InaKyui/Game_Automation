@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : princess_connect_re_dive_cn.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Princess connect re:dive project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 from base.game import Game
 from base.task import Task
@@ -31,7 +31,6 @@ class PrincessConnectReDive(Game):
         """
             Initialize task information.
         """
-
         # Resolution at the time of recording.
         rcr_rsl = (1280, 720)
         # Login.
@@ -48,7 +47,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Explore.
         task_name = "explore"
         task_mode = "random_task"
@@ -63,7 +61,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Shopping.
         task_name = "shopping"
         task_mode = "random_task"
@@ -78,19 +75,16 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Guild.
         task_name = "guild"
         task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Home.
         task_name = "home"
         task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Gashapon.
         task_name = "gashapon"
         task_mode = "random_task"
@@ -105,7 +99,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Dungeons.
         task_name = "dungeons"
         task_mode = "random_task"
@@ -127,7 +120,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Arena.
         task_name = "arena"
         task_mode = "random_task"
@@ -149,7 +141,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Princess arena.
         task_name = "princess_arena"
         task_mode = "finish_task"
@@ -171,7 +162,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Quest.
         task_name = "quest"
         task_mode = "finish_task"
@@ -186,7 +176,6 @@ class PrincessConnectReDive(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Complete.
         task_name = "complete"
         task_mode = "finish_task"
@@ -199,18 +188,14 @@ class PrincessConnectReDive(Game):
         self.wait("login_menu", timeout=300, interval=10)
         task.coordinates["blank_area"].click()
         # Check if there is an update and update if available.
-        if self.exists("button_confirm_blue"):
-            self.touch("button_confirm_blue", 60)
-
+        self.exists_and_touch("button_confirm_blue", 60)
         # Check special events such as birthdays and events.
         for _ in range(10):
-            if self.exists("login_skip"):
-                self.touch("login_skip", 1.5)
+            if self.exists_and_touch("login_skip", 1.5):
                 # TODO Check Birthdays event.
-                if self.exists("button_confirm_white"):
-                    self.touch("button_confirm_white")
-            elif self.exists("button_close"):
-                self.touch("button_close", 1.5)
+                self.exists_and_touch("button_confirm_white")
+            elif self.exists_and_touch("button_close", 1.5):
+                pass
             else:
                 if self.exists("bar_main_active"):
                     break
@@ -220,10 +205,8 @@ class PrincessConnectReDive(Game):
     @task_log
     def __task_explore(self):
         task = self.get_task("explore")
-        if self.exists("bar_adventure_active"):
-            self.touch("bar_adventure_active", 1.5)
-        else:
-            self.touch("bar_adventure", 1.5)
+        if not self.exists_and_touch("bar_adventure_active", 2.5):
+            self.touch("bar_adventure", 2.5)
         self.touch("entrance_explore", 1.5)
         self.touch("explore_exp")
         task.coordinates["top_level"].click()
@@ -238,10 +221,8 @@ class PrincessConnectReDive(Game):
     @task_log
     def __task_shopping(self):
         task = self.get_task("shopping")
-        if self.exists("bar_main_active"):
-            self.touch("bar_main_active", 1.5)
-        else:
-            self.touch("bar_main", 1.5)
+        if not self.exists_and_touch("bar_main_active", 2.5):
+            self.touch("bar_main", 2.5)
         self.touch("menu_shop", 1.5)
         self.touch("shop_all")
         task.coordinates["buy_button"].click()
@@ -250,24 +231,24 @@ class PrincessConnectReDive(Game):
 
     @task_log
     def __task_guild(self):
-        if self.exists("bar_main_active"):
-            self.touch("bar_main_active", 1.5)
-        else:
-            self.touch("bar_main", 1.5)
+        if self.exists_and_touch("bar_main_active", 2.5):
+            self.touch("bar_main", 2.5)
         self.touch("menu_guild", 3)
-        if self.exists("button_close"):
-            self.touch("button_close")
-        if self.exists("button_confirm_white"):
-            self.touch("button_confirm_white")
+        for _ in range(3):
+            if self.exists_and_touch("button_close", 1.5):
+                pass
+            elif self.exists_and_touch("button_confirm_white", 1.5):
+                pass
+            else:
+                break
         self.touch("guild_member", 3)
         self.touch("guild_like")
         self.touch("button_confirm_blue")
 
     @task_log
     def __task_home(self):
-        self.touch("bar_home", 1.5)
-        if self.exists("button_close"):
-            self.touch("button_close")
+        self.touch("bar_home", 2.5)
+        self.exists_and_touch("button_close")
         self.touch("home_receive")
         self.touch("button_close")
 
@@ -275,8 +256,7 @@ class PrincessConnectReDive(Game):
     def __task_gashapon(self):
         task = self.get_task("gashapon")
         self.touch("bar_gashapon", 3)
-        if self.exists("button_close"):
-            self.touch("button_close")
+        self.exists_and_touch("button_close")
         task.coordinates["normal_button"].click()
         self.touch("gashapon_free")
         self.touch("button_confirm_blue", 3)
@@ -285,10 +265,8 @@ class PrincessConnectReDive(Game):
     @task_log
     def __task_dungeons(self):
         task = self.get_task("dungeons")
-        if self.exists("bar_adventure_active"):
-            self.touch("bar_adventure_active", 1.5)
-        else:
-            self.touch("bar_adventure", 1.5)
+        if not self.exists_and_touch("bar_adventure_active", 2.5):
+            self.touch("bar_adventure", 2.5)
         self.touch("entrance_dungeons")
         task.coordinates["level_button"].click()
         self.touch("dungeons_skip", 7)
@@ -297,14 +275,11 @@ class PrincessConnectReDive(Game):
     @task_log
     def __task_arena(self):
         task = self.get_task("arena")
-        if self.exists("bar_adventure_active"):
-            self.touch("bar_adventure_active", 1.5)
-        else:
-            self.touch("bar_adventure", 1.5)
+        if not self.exists_and_touch("bar_adventure_active", 2.5):
+            self.touch("bar_adventure", 2.5)
         self.touch("entrance_arena", 3)
         for _ in range(3):
-            if self.exists("arena_receive"):
-                self.touch("arena_receive")
+            if self.exists_and_touch("arena_receive"):
                 self.touch("button_confirm_white")
                 break
             else:
@@ -313,29 +288,24 @@ class PrincessConnectReDive(Game):
         self.touch("button_attack")
         self.wait("arena_skip", timeout=30, interval=3)
         for _ in range(3):
-            if self.exists("arena_skip"):
-                self.touch("arena_skip")
-                try:
-                    self.wait("button_next", timeout=60, interval=5)
-                    break
-                except:
-                    continue
+            try:
+                self.touch("arena_skip", 3)
+                self.wait("button_next", timeout=15, interval=3)
+                break
+            except:
+                continue
         self.touch("button_next", 3)
         # Ranking move up.
-        if self.exists("button_confirm_white"):
-            self.touch("button_confirm_white")
+        self.exists_and_touch("button_confirm_white")
 
     @task_log
     def __task_princess_arena(self):
         task = self.get_task("princess_arena")
-        if self.exists("bar_adventure_active"):
-            self.touch("bar_adventure_active", 1.5)
-        else:
-            self.touch("bar_adventure", 1.5)
+        if not self.exists_and_touch("bar_adventure_active", 2.5):
+            self.touch("bar_adventure", 2.5)
         self.touch("entrance_princess_arena", 3)
         for _ in range(3):
-            if self.exists("arena_receive"):
-                self.touch("arena_receive")
+            if self.exists_and_touch("arena_receive"):
                 self.touch("button_confirm_white")
                 break
             else:
@@ -346,25 +316,21 @@ class PrincessConnectReDive(Game):
         self.touch("button_attack")
         self.wait("arena_skip", timeout=30, interval=3)
         for _ in range(3):
-            if self.exists("arena_skip"):
-                self.touch("arena_skip")
-                try:
-                    self.wait("button_next", timeout=60, interval=5)
-                    break
-                except:
-                    continue
+            try:
+                self.touch("arena_skip", 3)
+                self.wait("button_next", timeout=15, interval=3)
+                break
+            except:
+                continue
         self.touch("button_next", 3)
         # Ranking move up.
-        if self.exists("button_confirm_white"):
-            self.touch("button_confirm_white")
+        self.exists_and_touch("button_confirm_white")
 
     @task_log
     def __task_quest(self):
         task = self.get_task("quest")
-        if self.exists("bar_adventure_active"):
-            self.touch("bar_adventure_active", 1.5)
-        else:
-            self.touch("bar_adventure", 1.5)
+        if not self.exists_and_touch("bar_adventure_active", 2.5):
+            self.touch("bar_adventure", 2.5)
         # Checking the existence of the events.
         if self.exists("quest_entrance"):
             self.touch("quest_entrance", 3)
@@ -380,8 +346,8 @@ class PrincessConnectReDive(Game):
             self.touch("button_close", 1.5)
             self.touch("quest_map", 3)
         # No special scenario.
-        elif self.exists("button_close"):
-            self.touch("button_close", 1.5)
+        else:
+            self.exists_and_touch("button_close", 1.5)
         self.touch("quest_very_hard_boss")
         self.touch("quest_challenge")
         self.touch("button_attack", 10)
@@ -396,13 +362,11 @@ class PrincessConnectReDive(Game):
         self.touch("button_next", 7)
         self.touch("button_next", 3)
         # Defeat a certain number of bosses to trigger special conversations.
-        if self.exists("button_menu"):
-            self.touch("button_menu")
+        if self.exists_and_touch("button_menu"):
             self.touch("button_auto")
             # TODO Check button.
             self.wait("quest_map", timeout=60, interval=5)
             self.touch("quest_map", 3)
-
         self.touch("quest_character")
         for cycle in range(5):
             for _ in range(2):
@@ -423,10 +387,8 @@ class PrincessConnectReDive(Game):
 
     @task_log
     def __task_complete(self):
-        if self.exists("bar_main_active"):
-            self.touch("bar_main_active", 1.5)
-        else:
-            self.touch("bar_main", 1.5)
+        if not self.exists_and_touch("bar_main_active", 2.5):
+            self.touch("bar_main", 2.5)
         self.touch("menu_task")
         self.touch("task_receive")
 
@@ -445,7 +407,6 @@ class PrincessConnectReDive(Game):
             "quest": self.__task_quest,
             "complete": self.__task_complete
         }
-
         if task:
             self.task_init()
             for t in task:

@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : honkai_impact_3_cn.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Honkai Impact 3 project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 from base.game import Game
 from base.task import Task
@@ -30,7 +30,6 @@ class HonkaiImpact3(Game):
         """
             Initialize task information.
         """
-
         # Resolution at the time of recording.
         rcr_rsl = (1920, 1080)
         # Login.
@@ -38,7 +37,6 @@ class HonkaiImpact3(Game):
         task_mode = "start_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Receive energy.
         task_name = "energy"
         task_mode = "start_task"
@@ -53,7 +51,6 @@ class HonkaiImpact3(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Home.
         task_name = "home"
         task_mode = "random_task"
@@ -68,13 +65,11 @@ class HonkaiImpact3(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Fleet.
         task_name = "fleet"
         task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Quest.
         task_name = "quest"
         task_mode = "random_task"
@@ -89,7 +84,6 @@ class HonkaiImpact3(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Complete.
         task_name = "complete"
         task_mode = "finish_task"
@@ -114,27 +108,19 @@ class HonkaiImpact3(Game):
 
     @task_log
     def __task_login(self):
-        if self.exists("button_confirm"):
-            self.touch("button_confirm")
+        if self.exists_and_touch("button_confirm"):
             self.wait("button_confirm", timeout=600, interval=10)
             self.touch("button_confirm")
         self.wait("login_tip", timeout=300, interval=10)
         self.touch("login_tip", 30)
         for _ in range(5):
-            if self.exists("login_receive"):
-                self.touch("login_receive", 3)
+            if self.exists_and_touch("login_receive", 3):
                 # TODO Check actual situation.
-                if self.exists("button_confirm"):
-                    self.touch("button_confirm", 3)
+                self.exists_and_touch("button_confirm", 3)
             else:
                 break
-        if self.exists("login_abyss"):
-            self.touch("login_abyss", 3)
-        for _ in range(3):
-            if self.exists("button_close"):
-                self.touch("button_close", 1.5)
-            else:
-                break
+        self.exists_and_touch("login_abyss", 3)
+        self.touch_care("button_close", wait_time=1.5)
 
     @task_log
     def __task_energy(self):
@@ -153,41 +139,34 @@ class HonkaiImpact3(Game):
         self.touch("home_quest", 1.5)
         self.touch("home_expand")
         for _ in range(10):
-            if self.exists("home_quest_complete"):
-                self.touch("home_quest_complete")
+            if self.exists_and_touch("home_quest_complete"):
                 self.touch("button_confirm", 1.5)
             else:
                 break
         for _ in range(10):
             task.coordinates["new_quest"].click()
-            if self.exists("home_dispatch"):
-                self.touch("home_dispatch")
+            if self.exists_and_touch("home_dispatch"):
                 self.touch("home_quest_start")
-                if self.exists("home_dispatch"):
-                    self.touch("button_back", 1.3)
+                if self.exists_and_touch("button_back", 1.5):
                     break
             else:
                 break
         self.touch("button_back", 3)
         self.touch("home_story_sweep", 1.5)
-        if self.exists("home_story_sweep_complete"):
-            self.touch("home_story_sweep_complete", 1.5)
+        if self.exists_and_touch("home_story_sweep_complete", 1.5):
             self.touch("button_confirm", 1.5)
         for _ in range(3):
-            if self.exists("home_story_sweep_start"):
-                self.touch("home_story_sweep_start", 1.5)
+            if self.exists_and_touch("home_story_sweep_start", 1.5):
                 self.touch("home_dispatch", 1.5)
                 self.touch("home_story_sweep_confirm", 1.5)
                 if self.exists("home_dispatch"):
                     self.touch("button_back", 1.5)
                     break
         self.touch("home_resource")
-        if self.exists("home_story_sweep_complete"):
-            self.touch("home_story_sweep_complete", 1.5)
+        if self.exists_and_touch("home_story_sweep_complete", 1.5):
             self.touch("button_confirm", 1.5)
         for _ in range(3):
-            if self.exists("home_story_sweep_start"):
-                self.touch("home_story_sweep_start", 1.5)
+            if self.exists_and_touch("home_story_sweep_start", 1.5):
                 self.touch("home_dispatch", 1.5)
                 self.touch("home_story_sweep_confirm", 1.5)
                 if self.exists("home_dispatch"):
@@ -202,8 +181,7 @@ class HonkaiImpact3(Game):
         self.touch("fleet_apply")
         self.touch("fleet_accept")
         for _ in range(8):
-            if self.exists("fleet_submit"):
-                self.touch("fleet_submit")
+            if self.exists_and_touch("fleet_submit"):
                 self.touch("fleet_double_submit")
                 self.touch("fleet_put")
             else:
@@ -245,7 +223,6 @@ class HonkaiImpact3(Game):
             "quest": self.__task_quest,
             "complete": self.__task_complete
         }
-
         if task:
             self.task_init()
             for t in task:

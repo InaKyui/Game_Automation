@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : fate_grand_order_cn.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Fate grand order project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 from base.game import Game
 from base.task import Task
@@ -30,7 +30,6 @@ class FateGrandOrder(Game):
         """
             Initialize task information.
         """
-
         # Resolution at the time of recording.
         rcr_rsl = (1920, 1080)
         # Login.
@@ -38,7 +37,6 @@ class FateGrandOrder(Game):
         task_mode = "start_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Daily quest.
         # Coordinate information based on (1920,1080)
         # Skill:          [1](485,540);[2](965,540);[3](1445,540)
@@ -170,19 +168,16 @@ class FateGrandOrder(Game):
 
     @task_log
     def __task_login(self):
-        if self.exists("login_update"):
-            self.touch("login_update")
-        self.wait("login_tip", timeout=300, interval=10)
+        self.wait("login_fou", timeout=60, interval=3)
+        time.sleep(5)
+        self.exists_and_touch("login_update")
+        self.wait("login_tip", timeout=60, interval=5)
         self.touch("login_tip")
-        self.wait("login_logo", timeout=50, interval=5)
-        self.touch("login_logo")
-        self.wait("login_close", timeout=50, interval=5)
+        self.wait("login_logo", timeout=60, interval=3)
+        self.touch_care("login_logo")
+        self.wait("login_close", timeout=60, interval=3)
         self.touch("login_close", 3)
-        for _ in range(5):
-            if self.exists("button_close"):
-                self.touch("button_close", 1.5)
-            else:
-                break
+        self.touch_care("button_close", wait_time=1.5)
 
     @task_log
     def __task_daily_quest(self):
@@ -192,13 +187,15 @@ class FateGrandOrder(Game):
         if not self.exists("quest_coin"):
             task.coordinates["scroll_bar"].click()
         self.touch("quest_coin")
-
         for cycle in range(3):
             self.touch("quest_class_caster")
-            for _ in range(5):
-                if self.exists("quest_craft_essences_monalisa"):
-                    self.touch("quest_craft_essences_monalisa")
+            for i in range(5):
+                if self.exists_and_touch("quest_craft_essences_monalisa"):
+                    break
                 else:
+                    # Refreshing cooldown.
+                    if i > 0:
+                        time.sleep(10)
                     self.touch("quest_refresh")
                     self.touch("quest_confirm", 1.5)
             if cycle == 0:
@@ -240,9 +237,7 @@ class FateGrandOrder(Game):
             self.touch("quest_fetters")
             self.touch("quest_experiences")
             for _ in range(3):
-                if self.exists("quest_next"):
-                    self.touch("quest_next", 1.5)
-                else:
+                if not self.exists_and_touch("quest_next", 1.5):
                     break
             self.touch("quest_continue", 1.5)
             if self.exists("quest_silver_apple"):
@@ -256,7 +251,6 @@ class FateGrandOrder(Game):
             "login": self.__task_login,
             "daily_quest": self.__task_daily_quest
         }
-
         if task:
             self.task_init()
             for t in task:

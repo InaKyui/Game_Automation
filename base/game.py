@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : game.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Class game.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 import os
 import json
@@ -29,7 +29,7 @@ class Game:
                 country - Country of the game.
                 package_name - Android application package name.
                 activity_name - Android application activity name.
-                speed - Waiting speed. The bigger the number, the slower the speed.
+                speed - Waiting speed. The bigger the number, the longer the wait.
                 resolution - Resolution at coordinate recording.
                 tasks - Task set, containing three phases: start, random and finish.
             [Statistics]
@@ -52,12 +52,10 @@ class Game:
             "random_task": [],
             "finish_task": []
         }
-
         self.pass_count = 0
         self.fail_count = 0
         self.pass_rate = 0
         self.avg_time = 0
-
         # Recode profile status.
         self.config_ext = False
         self.config_attrib = ["name",
@@ -71,7 +69,6 @@ class Game:
                            "avg_time"]
         self.game_path = os.path.join(os.getcwd(), "games",
                                       "{0}_{1}".format(self.name, self.country))
-
         # Load config & log.
         self.__load_config()
         self.__load_log()
@@ -80,7 +77,6 @@ class Game:
         """
             Print class property.
         """
-
         attrib_info = get_class_attribute(self.__dict__)
         return attrib_info
 
@@ -88,7 +84,6 @@ class Game:
         """
             Save information before release.
         """
-
         self.__save_config()
         self.__save_log()
         # self.finish()
@@ -97,7 +92,6 @@ class Game:
         """
             Load config information.
         """
-
         config_path = os.path.join(self.game_path, "config",
                                    "{0}_{1}.json".format(self.name, self.country))
         if os.path.exists(config_path):
@@ -105,13 +99,11 @@ class Game:
             config_dict = load_config(config_path)
             for sci in self.config_attrib:
                 self.__dict__[sci] = config_dict[sci]
-
             # Converting task dictionaries to classes.
             for task_mode in config_dict["tasks"].keys():
                 for task_dict in config_dict["tasks"][task_mode]:
                     task = Task(task_dict["name"], task_dict["coordinates"])
                     self.tasks[task_mode].append(task)
-
             print_message("Success", "[{}] Config information loaded!".format(self.name))
         else:
             print_message("Warning", "[{}] Config information lost!".format(self.name))
@@ -120,7 +112,6 @@ class Game:
         """
             Save config information.
         """
-
         # Make sure config path exists.
         path_exists(os.path.join(self.game_path, "config"))
         config_path = os.path.join(self.game_path, "config",
@@ -131,7 +122,6 @@ class Game:
             for sci in self.config_attrib:
                 json_dict[sci] = self.__dict__[sci]
             json_dict["tasks"] = {}
-
             # Record of task parameters.
             for task_mode in self.tasks.keys():
                 task_list = []
@@ -141,26 +131,22 @@ class Game:
                 json_dict["tasks"][task_mode] = task_list
             json_str = json.dumps(json_dict, indent=4)
             fw.write(json_str)
-
         print_message("Success", "[{}] Config information saved!".format(self.name))
 
     def __load_log(self):
         """
             Load log.
         """
-
         log_path = os.path.join(self.game_path, "log",
                                 "{0}_{1}.json".format(self.name, self.country))
         if os.path.exists(log_path) and self.config_ext:
             log_dict = load_config(log_path)
             for sti in self.log_attrib:
                 self.__dict__[sti] = log_dict[sti]
-
             for task_mode in self.tasks.keys():
                 for task in self.tasks[task_mode]:
                     for si in self.log_attrib:
                         task.__dict__[si] = log_dict["tasks"][task.name][si]
-
             print_message("Success", "[{}] Log loaded!".format(self.name))
         else:
             print_message("Warning", "[{}] Log lost!".format(self.name))
@@ -169,7 +155,6 @@ class Game:
         """
             Save log.
         """
-
         # Make sure log path exists.
         path_exists(os.path.join(self.game_path, "log"))
         log_path = os.path.join(self.game_path, "log",
@@ -210,7 +195,6 @@ class Game:
         """
             Start the application by package name.
         """
-
         try:
             start_app(self.package_name)
         except:
@@ -224,7 +208,6 @@ class Game:
         """
             Stop the application by package name.
         """
-
         # stop_app(self.package_name)
         time.sleep(5)
 
@@ -233,14 +216,12 @@ class Game:
         """
             Initial game information, game tasks, coordinates etc.
         """
-
         pass
 
     def get_task(self, task_name:str) -> Task:
         """
             Get task class by task name.
         """
-
         for task_mode in self.tasks:
             for task in self.tasks[task_mode]:
                 if task.name == task_name:
@@ -252,7 +233,6 @@ class Game:
             Get image by image name.
             If extension doesn't exist, auto-complete it to png format.
         """
-
         # Check the extension.
         if ".png" not in image_name and ".jpg" not in image_name:
             image_path = os.path.join(self.game_path, "image", image_name + ".png")
@@ -264,23 +244,44 @@ class Game:
         """
             Overloading the exists function.
         """
-
         return exists(self.__get_image(image_name))
 
     def touch(self, image_name:str, wait_time:int=1, **kwargs):
         """
             Overloading the touch function.
         """
-
         touch(self.__get_image(image_name), **kwargs)
-        if wait_time:
+        time.sleep(wait_time * self.speed)
+
+    def exists_and_touch(self, image_name:str, wait_time:int=1, **kwargs):
+        """
+            If image exists then touch.
+        """
+        pos = exists(self.__get_image(image_name))
+        if pos:
+            touch(pos, **kwargs)
             time.sleep(wait_time * self.speed)
+        return pos
+
+    def touch_care(self, image_name:str, judgment_image_name:str=None, disappear:bool=True, cycle:int=10, wait_time:int=1, **kwargs):
+        """
+            Make sure to end the touch when the judgment image disappears or appears. Default cycle 10 times.
+        """
+        if not judgment_image_name:
+            judgment_image_name = image_name
+        for _ in range(cycle):
+            self.touch(image_name, wait_time, **kwargs)
+            if disappear:
+                if not self.exists(judgment_image_name):
+                    break
+            else:
+                if self.exists(judgment_image_name):
+                    break
 
     def wait(self, image_name:str, **kwargs):
         """
             Overloading the wait function.
         """
-
         wait(self.__get_image(image_name), **kwargs)
 
     def task_process(self, switch_tasks:dict):
@@ -290,7 +291,6 @@ class Game:
         if not self.config_ext:
             # Configuration file does not exist, initialize.
             self.task_init()
-
         total_count = self.pass_count + self.fail_count
         start_time = datetime.datetime.now()
         start_time_str = start_time.strftime("%Y_%m_%d_%H_%M_%S")
@@ -299,12 +299,10 @@ class Game:
         os.makedirs(log_dir)
         auto_setup(basedir=os.path.join(self.game_path, "{}_{}.py".format(self.name, self.country)),
                    logdir=log_dir)
-
         # Run according to the configuration file.
         try:
             # Start game.
             self.start()
-
             # Execute task according to task name.
             for task_mode in self.tasks.keys():
                 task_list = self.tasks[task_mode]
@@ -329,7 +327,6 @@ class Game:
                         task.fail_count = task.fail_count + 1
                     finally:
                         task.pass_rate = round(task.pass_count / (task.pass_count + task.fail_count), 4) * 100
-
             self.pass_count = self.pass_count + 1
             end_time = datetime.datetime.now()
             duration_time = (end_time - start_time).seconds

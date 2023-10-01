@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : arknights.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Arknights project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 import re
 import requests
@@ -33,7 +33,6 @@ class Arknights(Game):
             "tags": [],
             "operators": {}
         }
-
         self.__event_quest = False
 
     @task_log
@@ -41,7 +40,6 @@ class Arknights(Game):
         """
             Initialize task information.
         """
-
         # Resolution at the time of recording.
         rcr_rsl = (1280, 720)
         # Login.
@@ -49,13 +47,11 @@ class Arknights(Game):
         task_mode = "start_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Source center.
         task_name = "source_center"
         task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Infrastructure.
         task_name = "infrastructure"
         task_mode = "random_task"
@@ -149,40 +145,39 @@ class Arknights(Game):
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             0.5).get_coordinate_dict()
+                                             0.25).get_coordinate_dict()
             },
             {
                 "second_operator": Coordinate(round(485/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              0.5).get_coordinate_dict()
+                                              0.25).get_coordinate_dict()
             },
             {
                 "third_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             0.5).get_coordinate_dict()
+                                             0.25).get_coordinate_dict()
             },
             {
                 "fourth_operator": Coordinate(round(625/rcr_rsl[0], 4),
                                               round(480/rcr_rsl[1], 4),
                                               round(3/rcr_rsl[0], 4),
                                               round(3/rcr_rsl[1], 4),
-                                              0.5).get_coordinate_dict()
+                                              0.25).get_coordinate_dict()
             },
             {
                 "fifth_operator": Coordinate(round(765/rcr_rsl[0], 4),
                                              round(205/rcr_rsl[1], 4),
                                              round(3/rcr_rsl[0], 4),
                                              round(3/rcr_rsl[1], 4),
-                                             0.5).get_coordinate_dict()
+                                             0.25).get_coordinate_dict()
             },
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Event quest.
         task_name = "event_quest"
         task_mode = "random_task"
@@ -197,13 +192,11 @@ class Arknights(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Daily quest.
         task_name = "daily_quest"
         task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-
         # Recruit center.
         task_name = "recruit_center"
         task_mode = "random_task"
@@ -299,12 +292,7 @@ class Arknights(Game):
         """
             Back to the home page.
         """
-
-        for _ in range(5):
-            if self.exists("button_back"):
-                self.touch("button_back", 1.5)
-            else:
-                break
+        self.touch_care("button_back", wait_time=1.5)
 
     @task_log
     def __task_login(self):
@@ -312,15 +300,10 @@ class Arknights(Game):
         self.wait("login_start", timeout=300, interval=10)
         self.touch("login_start", 5)
         self.touch("login_enter", 30)
-        if self.exists("login_rewards"):
-            # Receive login rewards
-            self.touch("login_rewards", 1.5)
+        # Receive login rewards
+        self.exists_and_touch("login_rewards", 1.5)
         # Close event announcement.
-        for _ in range(5):
-            if self.exists("login_close"):
-                self.touch("login_close", 3)
-            else:
-                break
+        self.touch_care("login_close", wait_time=3)
 
     @task_log
     def __task_source_center(self):
@@ -333,16 +316,13 @@ class Arknights(Game):
 
     def __change_operator(self, room:str):
         task = self.get_task("infrastructure")
-        for _ in range(3):
-            task.coordinates[room].click()
-            if self.exists("operator_info"):
-                break
+        # Preventing failure to enter the room due to harvested items.
+        task.coordinates[room].click_care("infrastructure_center")
         # Release the operator.
         if not self.exists("operator_release"):
             self.touch("operator_info")
         self.touch("operator_release")
-        if self.exists("button_ensure"):
-            self.touch("button_ensure")
+        self.exists_and_touch("button_ensure")
         # Deploy the operator.
         self.touch("operator_deploy")
         operator_count = {
@@ -360,7 +340,6 @@ class Arknights(Game):
             "meeting": 2,
             "office": 1
         }
-
         if operator_count[room] >= 1:
             task.coordinates["first_operator"].click()
         if operator_count[room] >= 2:
@@ -372,24 +351,18 @@ class Arknights(Game):
         if operator_count[room] >= 5:
             task.coordinates["fifth_operator"].click()
         self.touch("operator_confirm")
-        if self.exists("operator_double_confirm"):
-            self.touch("operator_double_confirm")
-        if self.exists("button_back"):
-            self.touch("button_back", 1.5)
+        self.exists_and_touch("operator_double_confirm")
+        self.exists_and_touch("button_back", 1.5)
 
     @task_log
     def __task_infrastructure(self):
         self.touch("menu_infrastructure", 3)
         if self.exists("infrastructure_notification"):
             self.touch("infrastructure_notification")
-            if self.exists("infrastructure_resource"):
-                self.touch("infrastructure_resource")
-            if self.exists("infrastructure_coin"):
-                self.touch("infrastructure_coin")
-            if self.exists("infrastructure_trust"):
-                self.touch("infrastructure_trust")
-            if self.exists("infrastructure_to_do"):
-                self.touch("infrastructure_to_do")
+            self.exists_and_touch("infrastructure_resource")
+            self.exists_and_touch("infrastructure_coin")
+            self.exists_and_touch("infrastructure_trust")
+            self.exists_and_touch("infrastructure_to_do")
         # Center.
         self.touch("infrastructure_center")
         self.__change_operator("center")
@@ -426,15 +399,15 @@ class Arknights(Game):
             task.coordinates["last_quest"].click()
             for _ in range(100):
                 self.touch("quest_formation", 1.5)
-                if self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
+                if self.exists_and_touch("quest_start"):
+                    pass
+                elif self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
                     self.touch("quest_cancel")
                     break
-                self.touch("quest_start")
                 try:
                     self.wait("quest_finish", timeout=300, interval=10)
                 except:
-                    if self.exists("quest_level_up"):
-                        self.touch("quest_level_up", 1.5)
+                    self.exists_and_touch("quest_level_up", 1.5)
                 self.touch("quest_finish", 3)
             self.__event_quest = True
         except Exception as e:
@@ -444,41 +417,44 @@ class Arknights(Game):
         finally:
             self.__back_homepage()
 
-
     @task_log
     def __task_daily_quest(self):
-        # Determine if event quests have been completed.
-        if self.__event_quest == False:
-            self.touch("menu_terminal", 1.5)
-            self.touch("daily_page", 1.5)
-            # Coin quest.
-            if self.exists("daily_coin"):
-                self.touch("daily_coin", 1.5)
-                self.touch("daily_coin_ce_6", 1.5)
-            # Exp quest.
-            elif self.exists("daily_exp"):
-                self.touch("daily_exp", 1.5)
-                self.touch("daily_exp_ls_6", 1.5)
-
-            for _ in range(100):
-                self.touch("quest_formation", 1.5)
-                if self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
-                    self.touch("quest_cancel")
-                    break
-                self.touch("quest_start")
-                try:
-                    self.wait("quest_finish", timeout=300, interval=10)
-                except:
-                    if self.exists("quest_level_up"):
-                        self.touch("quest_level_up", 1.5)
-                self.touch("quest_finish", 3)
+        try:
+            # Determine if event quests have been completed.
+            if self.__event_quest == False:
+                self.touch("menu_terminal", 1.5)
+                self.touch("daily_page", 1.5)
+                # Coin quest.
+                if self.exists_and_touch("daily_coin", 1.5):
+                    self.touch("daily_coin_ce_6", 1.5)
+                # Exp quest.
+                elif self.exists_and_touch("daily_exp", 1.5):
+                    self.touch("daily_exp_ls_6", 1.5)
+                for _ in range(100):
+                    self.touch("quest_formation", 1.5)
+                    if self.exists_and_touch("quest_start"):
+                        pass
+                    elif self.exists("quest_break_pharmacist") or self.exists("quest_break_stone"):
+                        self.touch("quest_cancel")
+                        break
+                    try:
+                        self.wait("quest_finish", timeout=300, interval=10)
+                        time.sleep(1)
+                    except:
+                        self.exists_and_touch("quest_level_up", 1.5)
+                    self.touch("quest_finish", 3)
+                self.__back_homepage()
+        except Exception as e:
+            print_message("Error", "Some errors have occurred in the event quest.")
+            print_message("Error", str(e))
+            print_message("Error", repr(e))
+        finally:
             self.__back_homepage()
 
     def get_operators(self) -> Tuple[List[str], List[dict]]:
         """
             Get the list of all tags and operators information by crawling the official wiki.
         """
-
         tags = []
         operators = []
         session = requests.Session()
@@ -521,7 +497,6 @@ class Arknights(Game):
             Attributes:
                 coordinates - Used to get the tag area based on the actual coordinates.
         """
-
         # Get the list of all tags and operators information.
         if self.recruit_info["tags"] == [] and self.recruit_info["operators"] == {}:
             self.recruit_info["tags"], self.recruit_info["operators"] = self.get_operators()
@@ -543,7 +518,6 @@ class Arknights(Game):
               "content": "",
               "rectangle": coordinates["fifth_tag"].get_click_area() },
         ]
-
         # Get screenshot.
         screen = G.DEVICE.snapshot()
         for ti in tags_info:
@@ -552,7 +526,6 @@ class Arknights(Game):
             tag_content = image_to_string(tag_image)
             if tag_content in self.recruit_info["tags"]:
                 ti["content"] = tag_content
-
         # Get all possible combinations.
         tag_combo = []
         for ti in tags_info:
@@ -561,7 +534,6 @@ class Arknights(Game):
                     tag_combo = tag_combo + [tcl + [ti["content"]] for tcl in tag_combo] + [[ti["content"]]]
                 else:
                     tag_combo.append([ti["content"]])
-
         scoring_sheet = {}
         for tc in tag_combo:
             for operator in self.recruit_info["operators"]:
@@ -576,7 +548,7 @@ class Arknights(Game):
             scoring_sheet[ssk] = round(len([x for x in scoring_sheet[ssk] if x > 3 or x == 1]) / len(scoring_sheet[ssk]) , 4) * 100
         # Sort tag combinations by probability.
         target_tag = sorted(scoring_sheet.items(), key=lambda x:x[1])[-1][0].split(",")
-        print(target_tag)
+        # print(target_tag)
         for ti in tags_info:
             if ti["content"] in target_tag:
                 coordinates[ti["name"]].click()
@@ -584,24 +556,18 @@ class Arknights(Game):
     def __recruit(self, task):
         # Check whether acceleration is required.
         for _ in range(4):
-            if self.exists("recruit_accelerate"):
-                self.touch("recruit_accelerate")
-                if self.exists("button_ensure"):
-                    self.touch("button_ensure")
-                else:
+            if self.exists_and_touch("recruit_accelerate"):
+                if not self.exists_and_touch("button_ensure"):
                     break
             else:
                 break
-
         # Recruit the operator.
         for _ in range(4):
-            if self.exists("recruit_complete"):
-                self.touch("recruit_complete", 5)
+            if self.exists_and_touch("recruit_complete", 5):
                 self.touch("button_skip", 3)
                 task.coordinates["blank_area"].click()
             else:
                 break
-
         # Add recruit order.
         index = ["first", "second", "third", "fourth"]
         for i in range(len(index)):
@@ -644,7 +610,6 @@ class Arknights(Game):
             "complete": self.__task_complete,
             "[special]recruit": self.__special_task_recruit
         }
-
         if task:
             self.task_init()
             for t in task:

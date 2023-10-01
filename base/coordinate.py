@@ -2,21 +2,21 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : coordinate.py
-[Time]        : 2023/09/17 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.5
+[Version]     : 2.6
 [Description] : Class coorndinate.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.5"
+__version__ = "Version: 2.6"
 
 import time
 import random
-from base.common import print_message, get_class_attribute
+from base.common import *
 from typing import List
-from airtest.core.api import device, click
+from airtest.core.api import click, device
 
 class Coordinate:
     """
@@ -39,7 +39,6 @@ class Coordinate:
         """
             Print class property.
         """
-
         attrib_info = get_class_attribute(self.__dict__)
         return attrib_info
 
@@ -47,16 +46,13 @@ class Coordinate:
         """
             Convert the class attributes to a dictionary.
         """
-
         return self.__dict__
 
     def click(self, wait_time:int=None):
         """
             Click based on class attributes.
         """
-
         resolution = device().get_current_resolution()
-
         x = int(self.x * resolution[0])
         y = int(self.y * resolution[1])
         error_x = int(self.error_x * resolution[0])
@@ -68,29 +64,36 @@ class Coordinate:
         actual_y = int(y + random.randint(-error_y, error_y))
         if actual_y < 0:
             actual_y = 0
-        actual_time = random.randint(self.idle * 10, self.idle * 10 + 5)
-
+        actual_time = round(random.uniform(self.idle, self.idle + 0.5), 1)
         # Click.
         click([actual_x, actual_y])
         # print_message("Success", "Click ({0}, {1})".format(str(actual_x), str(actual_y)))
         # Idle.
-        # print_message("Success", "Wait {0} seconds".format(str(actual_time / 10)))
-        time.sleep(actual_time / 10)
+        # print_message("Notify", "Wait {0} seconds".format(str(actual_time / 10)))
+        time.sleep(actual_time)
         # Fine-tuning of time to actual conditions.
         if wait_time:
-            # print_message("Success", "Wait {0} seconds".format(str(wait_time)))
+            # print_message("Notify", "Wait {0} seconds".format(str(wait_time)))
             time.sleep(wait_time)
+
+    def click_care(self, judgment_image_name:str, disappear:bool=True, cycle:int=10, wait_time:int=None):
+        """
+            Make sure to end the touch when the judgment image disappears or appears. Default cycle 10 times.
+        """
+        for _ in range(cycle):
+            self.click(wait_time=wait_time)
+            image_exists = self.exists(judgment_image_name)
+            if (disappear and not image_exists) or\
+               (not disappear and image_exists):
+                break
 
     def get_click_area(self) -> List[int]:
         """
             Get a rectangular area based on point coordinates and allowable error range.
         """
-
         resolution = device().get_current_resolution()
-
         x = int(self.x * resolution[0])
         y = int(self.y * resolution[1])
         error_x = int(self.error_x * resolution[0])
         error_y = int(self.error_y * resolution[1])
-
         return [x - error_x, y - error_y, x + error_x, y + error_y]

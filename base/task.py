@@ -2,15 +2,15 @@
 #!/usr/bin/game_venv python3.7
 """
 [File]        : task.py
-[Time]        : 2023/06/07 18:00:00
+[Time]        : 2023/10/01 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.3
+[Version]     : 2.6
 [Description] : Class task.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.3"
+__version__ = "Version: 2.6"
 
 from base.common import get_class_attribute
 from base.coordinate import Coordinate
@@ -49,7 +49,6 @@ class Task:
         """
             Print class property.
         """
-
         attrib_info = get_class_attribute(self.__dict__)
         return attrib_info
 
@@ -60,7 +59,6 @@ class Task:
         """
             Coordinate information converted to dictionary.
         """
-
         crd_list = []
         for sck in self.coordinates.keys():
             crd = { sck: self.coordinates[sck].get_coordinate_dict() }
@@ -71,7 +69,6 @@ class Task:
         """
             Configuration information converted to dictionary.
         """
-
         config_dict = {
             "name": self.name,
             "coordinates": self.get_coordinates_dict()
@@ -82,7 +79,6 @@ class Task:
         """
             Log information converted to dictionary.
         """
-
         log_dict = {
             "pass_count": self.pass_count,
             "fail_count": self.fail_count,
