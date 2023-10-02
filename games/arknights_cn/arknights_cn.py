@@ -281,7 +281,6 @@ class Arknights(Game):
         ]
         task = Task(task_name, task_coordinates)
         self.tasks[task_mode].append(task)
-
         # Complete.
         task_name = "complete"
         task_mode = "finish_task"
@@ -299,7 +298,7 @@ class Arknights(Game):
         # Game updates will cause the program error.
         self.wait("login_start", timeout=300, interval=10)
         self.touch("login_start", 5)
-        self.touch("login_enter", 30)
+        self.touch("login_enter", 15)
         # Receive login rewards
         self.exists_and_touch("login_rewards", 1.5)
         # Close event announcement.
@@ -317,7 +316,10 @@ class Arknights(Game):
     def __change_operator(self, room:str):
         task = self.get_task("infrastructure")
         # Preventing failure to enter the room due to harvested items.
-        task.coordinates[room].click_care("infrastructure_center")
+        for _ in range(3):
+            task.coordinates[room].click()
+            if self.exists("operator_info"):
+                break
         # Release the operator.
         if not self.exists("operator_release"):
             self.touch("operator_info")
@@ -443,13 +445,13 @@ class Arknights(Game):
                     except:
                         self.exists_and_touch("quest_level_up", 1.5)
                     self.touch("quest_finish", 3)
-                self.__back_homepage()
         except Exception as e:
             print_message("Error", "Some errors have occurred in the event quest.")
             print_message("Error", str(e))
             print_message("Error", repr(e))
         finally:
-            self.__back_homepage()
+            if self.__event_quest == False:
+                self.__back_homepage()
 
     def get_operators(self) -> Tuple[List[str], List[dict]]:
         """
@@ -610,6 +612,7 @@ class Arknights(Game):
             "complete": self.__task_complete,
             "[special]recruit": self.__special_task_recruit
         }
+        # Running tasks based on task type.
         if task:
             self.task_init()
             for t in task:

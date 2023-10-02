@@ -168,8 +168,6 @@ class FateGrandOrder(Game):
 
     @task_log
     def __task_login(self):
-        self.wait("login_fou", timeout=60, interval=3)
-        time.sleep(5)
         self.exists_and_touch("login_update")
         self.wait("login_tip", timeout=60, interval=5)
         self.touch("login_tip")
@@ -202,19 +200,19 @@ class FateGrandOrder(Game):
                 self.touch("quest_start")
             self.wait("quest_attack", timeout=30, interval=5)
             # Round 1.
-            task.coordinates["servant_1_1"].click(5)
-            task.coordinates["servant_2_1"].click(1)
-            task.coordinates["skill_1"].click(5)
-            task.coordinates["servant_2_2"].click(1)
-            task.coordinates["skill_1"].click(5)
-            task.coordinates["servant_3_1"].click(5)
-            task.coordinates["servant_3_2"].click(1)
-            task.coordinates["skill_1"].click(5)
-            task.coordinates["servant_3_3"].click(1)
-            task.coordinates["skill_1"].click(5)
+            task.coordinates["servant_1_1"].click(3.5)
+            task.coordinates["servant_2_1"].click(0.5)
+            task.coordinates["skill_1"].click(3.5)
+            task.coordinates["servant_2_2"].click(0.5)
+            task.coordinates["skill_1"].click(3.5)
+            task.coordinates["servant_3_1"].click(3.5)
+            task.coordinates["servant_3_2"].click(0.5)
+            task.coordinates["skill_1"].click(3.5)
+            task.coordinates["servant_3_3"].click(0.5)
+            task.coordinates["skill_1"].click(3.5)
             task.coordinates["master_main"].click(0.5)
             task.coordinates["master_2"].click(0.5)
-            task.coordinates["skill_1"].click(5)
+            task.coordinates["skill_1"].click(3.5)
             self.touch("quest_attack", 1.5)
             task.coordinates["noble_phantasm_1"].click()
             task.coordinates["card_1"].click()
@@ -227,7 +225,7 @@ class FateGrandOrder(Game):
             task.coordinates["card_2"].click()
             self.wait("quest_attack", timeout=30, interval=5)
             # Round 3.
-            task.coordinates["servant_1_3"].click(5)
+            task.coordinates["servant_1_3"].click(3.5)
             self.touch("quest_attack", 1.5)
             task.coordinates["noble_phantasm_1"].click()
             task.coordinates["card_1"].click()
@@ -251,6 +249,7 @@ class FateGrandOrder(Game):
             "login": self.__task_login,
             "daily_quest": self.__task_daily_quest
         }
+        # Running tasks based on task type.
         if task:
             self.task_init()
             for t in task:

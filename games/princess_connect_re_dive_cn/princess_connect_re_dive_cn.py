@@ -364,7 +364,6 @@ class PrincessConnectReDive(Game):
         # Defeat a certain number of bosses to trigger special conversations.
         if self.exists_and_touch("button_menu"):
             self.touch("button_auto")
-            # TODO Check button.
             self.wait("quest_map", timeout=60, interval=5)
             self.touch("quest_map", 3)
         self.touch("quest_character")
@@ -377,6 +376,9 @@ class PrincessConnectReDive(Game):
             # Special stores appear.
             if self.exists("quest_shop_buy"):
                 self.touch("quest_shop_cancel")
+            # TODO Event dialogues.
+            # if self.exists("quest_shop_buy"):
+            #     self.touch("quest_shop_cancel")
             if cycle < 4:
                 task.coordinates["next_quest"].click()
             else:
@@ -407,6 +409,7 @@ class PrincessConnectReDive(Game):
             "quest": self.__task_quest,
             "complete": self.__task_complete
         }
+        # Running tasks based on task type.
         if task:
             self.task_init()
             for t in task:

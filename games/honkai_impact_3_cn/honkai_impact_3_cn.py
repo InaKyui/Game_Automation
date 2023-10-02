@@ -112,7 +112,7 @@ class HonkaiImpact3(Game):
             self.wait("button_confirm", timeout=600, interval=10)
             self.touch("button_confirm")
         self.wait("login_tip", timeout=300, interval=10)
-        self.touch("login_tip", 30)
+        self.touch("login_tip", 15)
         for _ in range(5):
             if self.exists_and_touch("login_receive", 3):
                 # TODO Check actual situation.
@@ -147,17 +147,17 @@ class HonkaiImpact3(Game):
             task.coordinates["new_quest"].click()
             if self.exists_and_touch("home_dispatch"):
                 self.touch("home_quest_start")
-                if self.exists_and_touch("button_back", 1.5):
-                    break
+                if self.exists("home_dispatch"):
+                    self.touch("button_back")
             else:
                 break
-        self.touch("button_back", 3)
+        self.touch("button_back", 1.5)
         self.touch("home_story_sweep", 1.5)
         if self.exists_and_touch("home_story_sweep_complete", 1.5):
-            self.touch("button_confirm", 1.5)
+            self.touch("button_confirm")
         for _ in range(3):
             if self.exists_and_touch("home_story_sweep_start", 1.5):
-                self.touch("home_dispatch", 1.5)
+                self.touch("home_dispatch")
                 self.touch("home_story_sweep_confirm", 1.5)
                 if self.exists("home_dispatch"):
                     self.touch("button_back", 1.5)
@@ -179,7 +179,7 @@ class HonkaiImpact3(Game):
         self.touch("menu_fleet", 3)
         self.touch("fleet_task")
         self.touch("fleet_apply")
-        self.touch("fleet_accept")
+        self.touch("fleet_accept", 2.5)
         for _ in range(8):
             if self.exists_and_touch("fleet_submit"):
                 self.touch("fleet_double_submit")
@@ -223,6 +223,7 @@ class HonkaiImpact3(Game):
             "quest": self.__task_quest,
             "complete": self.__task_complete
         }
+        # Running tasks based on task type.
         if task:
             self.task_init()
             for t in task:

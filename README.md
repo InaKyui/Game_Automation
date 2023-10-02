@@ -1,6 +1,6 @@
 ### 〓 Instructions 〓
 1. Please install python3 and run "prepare.bat" before running it for the first time.
- - [Download] https://www.python.org/downloads/release/python-377/
+ - [Download] https://www.python.org/downloads/release/python-31011/
 2. Modify the configuration file ".\Game_Automation\config\main.json".
  - [emulator_path] in the configuration file represents the file path of the Android emulator.
  - [game_list] in the configuration file represents the list of games that need to be executed.
@@ -15,7 +15,17 @@
 3. [*New*] User_Interface(2023.10)
     - Interface operation options.
 
-### 〓 Updated Version 2.5 〓
+### 〓 Special tasks 〓
+1. [arknights_cn]
+    - [__special_task_recruit] Recurring recruitment with tickets.
+
+### 〓 Updated Version 2.6 〓
+1. [*Critical*] Recommended python version updated to 3.10.11.
+2. Shorten the overall task execution time, the program running more smoothly.
+3. Optimized the code to improve code readability.
+4. Fix bugs that affect the normal operation of tasks.
+
+#### 〓 Updated Version 2.5 〓
 1. Add princess connect re:dive cn event quests sweeping function.
 2. Optimize arknigths recruitment function.
 3. Optimize base function.

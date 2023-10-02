@@ -76,17 +76,6 @@ class Coordinate:
             # print_message("Notify", "Wait {0} seconds".format(str(wait_time)))
             time.sleep(wait_time)
 
-    def click_care(self, judgment_image_name:str, disappear:bool=True, cycle:int=10, wait_time:int=None):
-        """
-            Make sure to end the touch when the judgment image disappears or appears. Default cycle 10 times.
-        """
-        for _ in range(cycle):
-            self.click(wait_time=wait_time)
-            image_exists = self.exists(judgment_image_name)
-            if (disappear and not image_exists) or\
-               (not disappear and image_exists):
-                break
-
     def get_click_area(self) -> List[int]:
         """
             Get a rectangular area based on point coordinates and allowable error range.
