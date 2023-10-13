@@ -1,16 +1,16 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : fate_grand_order_cn.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.6
+[Version]     : 2.7
 [Description] : Fate grand order project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.6"
+__version__ = "Version: 2.7"
 
 from base.game import Game
 from base.task import Task
@@ -170,7 +170,7 @@ class FateGrandOrder(Game):
     def __task_login(self):
         self.exists_and_touch("login_update")
         self.wait("login_tip", timeout=60, interval=5)
-        self.touch("login_tip")
+        self.touch_care("login_tip")
         self.wait("login_logo", timeout=60, interval=3)
         self.touch_care("login_logo")
         self.wait("login_close", timeout=60, interval=3)
@@ -184,11 +184,11 @@ class FateGrandOrder(Game):
         self.touch("quest_daily_mission")
         if not self.exists("quest_coin"):
             task.coordinates["scroll_bar"].click()
-        self.touch("quest_coin")
+        self.touch("quest_coin", 3)
         for cycle in range(3):
-            self.touch("quest_class_caster")
+            self.touch("quest_class_caster", 2.5)
             for i in range(5):
-                if self.exists_and_touch("quest_craft_essences_monalisa"):
+                if self.exists_and_touch("quest_craft_essences_monalisa", 2.5):
                     break
                 else:
                     # Refreshing cooldown.

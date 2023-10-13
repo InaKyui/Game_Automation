@@ -1,16 +1,16 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : arknights.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.6
+[Version]     : 2.7
 [Description] : Arknights project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.6"
+__version__ = "Version: 2.7"
 
 import re
 import requests
@@ -318,7 +318,7 @@ class Arknights(Game):
         # Preventing failure to enter the room due to harvested items.
         for _ in range(3):
             task.coordinates[room].click()
-            if self.exists("operator_info"):
+            if self.exists("operator_info") or self.exists("operator_release"):
                 break
         # Release the operator.
         if not self.exists("operator_release"):
@@ -408,7 +408,9 @@ class Arknights(Game):
                     break
                 try:
                     self.wait("quest_finish", timeout=300, interval=10)
+                    time.sleep(1.5)
                 except:
+                    # Special case: level-up.
                     self.exists_and_touch("quest_level_up", 1.5)
                 self.touch("quest_finish", 3)
             self.__event_quest = True
@@ -441,8 +443,9 @@ class Arknights(Game):
                         break
                     try:
                         self.wait("quest_finish", timeout=300, interval=10)
-                        time.sleep(1)
+                        time.sleep(1.5)
                     except:
+                        # Special case: level-up.
                         self.exists_and_touch("quest_level_up", 1.5)
                     self.touch("quest_finish", 3)
         except Exception as e:

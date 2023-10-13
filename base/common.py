@@ -1,16 +1,16 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : common.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.6
+[Version]     : 2.7
 [Description] : Common methods.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.6"
+__version__ = "Version: 2.7"
 
 import os
 import cv2
@@ -48,9 +48,9 @@ def path_exists(path:str):
     """
     try:
         if not os.path.exists(path):
-            print_message("Fail", "Can't find path: " + path)
+            # print_message("Fail", "Can't find path: " + path)
             os.mkdir(path)
-            print_message("Success", "Create path: " + path)
+            # print_message("Success", "Create path: " + path)
     except:
         print_message("Error", "Can't operate path: " + path)
         raise FileExistsError

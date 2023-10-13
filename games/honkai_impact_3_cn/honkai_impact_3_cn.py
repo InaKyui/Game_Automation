@@ -1,16 +1,16 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : honkai_impact_3_cn.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.6
+[Version]     : 2.7
 [Description] : Honkai Impact 3 project.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.6"
+__version__ = "Version: 2.7"
 
 from base.game import Game
 from base.task import Task
@@ -115,12 +115,11 @@ class HonkaiImpact3(Game):
         self.touch("login_tip", 15)
         for _ in range(5):
             if self.exists_and_touch("login_receive", 3):
-                # TODO Check actual situation.
                 self.exists_and_touch("button_confirm", 3)
             else:
                 break
         self.exists_and_touch("login_abyss", 3)
-        self.touch_care("button_close", wait_time=1.5)
+        self.touch_care("button_close", before=False, wait_time=1.5)
 
     @task_log
     def __task_energy(self):
@@ -146,9 +145,10 @@ class HonkaiImpact3(Game):
         for _ in range(10):
             task.coordinates["new_quest"].click()
             if self.exists_and_touch("home_dispatch"):
-                self.touch("home_quest_start")
+                self.touch("home_quest_start", 3.5)
                 if self.exists("home_dispatch"):
                     self.touch("button_back")
+                    break
             else:
                 break
         self.touch("button_back", 1.5)
@@ -181,9 +181,9 @@ class HonkaiImpact3(Game):
         self.touch("fleet_apply")
         self.touch("fleet_accept", 2.5)
         for _ in range(8):
-            if self.exists_and_touch("fleet_submit"):
+            if self.exists_and_touch("fleet_submit", 1.5):
                 self.touch("fleet_double_submit")
-                self.touch("fleet_put")
+                self.touch("fleet_put", 2.5)
             else:
                 break
         self.touch("fleet_bonus")

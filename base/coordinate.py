@@ -1,5 +1,5 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : coordinate.py
 [Time]        : 2023/10/01 18:00:00

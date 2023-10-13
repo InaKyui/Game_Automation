@@ -1,16 +1,16 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : game.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/10 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
-[Version]     : 2.6
+[Version]     : 2.7
 [Description] : Class game.
 """
 
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
-__version__ = "Version: 2.6"
+__version__ = "Version: 2.7"
 
 import os
 import json
@@ -263,20 +263,30 @@ class Game:
             time.sleep(wait_time * self.speed)
         return pos
 
-    def touch_care(self, image_name:str, judgment_image_name:str=None, disappear:bool=True, cycle:int=10, wait_time:int=1, **kwargs):
+    def touch_care(self, image_name:str, judgment_image_name:str=None, before:bool=True, disappear:bool=True, cycle:int=10, wait_time:int=1, **kwargs):
         """
             Make sure to end the touch when the judgment image disappears or appears. Default cycle 10 times.
+            Attributes:
+                image_name - name of the image to be touched.
+                judgment_image_name - name of the image as a basis for judgment.
+                before - touch before judgment or after judgment.
+                disappear - expect judgment image to disappear or appear.
+                cycle - number of cycles.
+                wait_time - waiting time after touching.
         """
         if not judgment_image_name:
             judgment_image_name = image_name
         for _ in range(cycle):
-            self.touch(image_name, wait_time, **kwargs)
+            if before:
+                self.touch(image_name, wait_time, **kwargs)
             if disappear:
                 if not self.exists(judgment_image_name):
                     break
             else:
                 if self.exists(judgment_image_name):
                     break
+            if not before:
+                self.touch(image_name, wait_time, **kwargs)
 
     def wait(self, image_name:str, **kwargs):
         """

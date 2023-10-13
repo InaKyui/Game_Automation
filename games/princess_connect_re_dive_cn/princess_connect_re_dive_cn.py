@@ -1,8 +1,8 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : princess_connect_re_dive_cn.py
-[Time]        : 2023/10/01 18:00:00
+[Time]        : 2023/10/13 18:00:00
 [Author]      : InaKyui
 [License]     : (C)Copyright 2023, InaKyui
 [Version]     : 2.6
@@ -231,7 +231,7 @@ class PrincessConnectReDive(Game):
 
     @task_log
     def __task_guild(self):
-        if self.exists_and_touch("bar_main_active", 2.5):
+        if not self.exists_and_touch("bar_main_active", 2.5):
             self.touch("bar_main", 2.5)
         self.touch("menu_guild", 3)
         for _ in range(3):
@@ -267,7 +267,7 @@ class PrincessConnectReDive(Game):
         task = self.get_task("dungeons")
         if not self.exists_and_touch("bar_adventure_active", 2.5):
             self.touch("bar_adventure", 2.5)
-        self.touch("entrance_dungeons")
+        self.touch("entrance_dungeons", 2.5)
         task.coordinates["level_button"].click()
         self.touch("dungeons_skip", 7)
         self.touch("button_confirm_white")

@@ -1,5 +1,5 @@
 #-*- encoding: utf-8 -*-
-#!/usr/bin/game_venv python3.7
+#!/usr/bin/game_venv python3.10
 """
 [File]        : reset.py
 [Time]        : 2023/09/15 18:00:00
