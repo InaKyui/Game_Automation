@@ -249,7 +249,7 @@ class PrincessConnectReDive(Game):
     def __task_home(self):
         self.touch("bar_home", 2.5)
         self.exists_and_touch("button_close")
-        self.touch("home_receive")
+        self.touch("home_receive", 2.5)
         self.touch("button_close")
 
     @task_log

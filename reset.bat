@@ -1,1 +1,1 @@
-python reset.py
+.\venv\Scripts\python reset.py
