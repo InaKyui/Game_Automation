@@ -321,7 +321,7 @@ class Arknights(Game):
             if self.exists("operator_info") or self.exists("operator_release"):
                 break
         # Release the operator.
-        if not self.exists("operator_release"):
+        if not (self.exists("operator_release_all") or self.exists("operator_deploy")):
             self.touch("operator_info")
         self.touch("operator_release")
         self.exists_and_touch("button_ensure")
