@@ -318,12 +318,12 @@ class Arknights(Game):
         # Preventing failure to enter the room due to harvested items.
         for _ in range(3):
             task.coordinates[room].click()
-            if self.exists("operator_info") or self.exists("operator_release"):
+            if self.exists("operator_info") or self.exists("operator_release_all"):
                 break
         # Release the operator.
-        if not (self.exists("operator_release_all") or self.exists("operator_deploy")):
+        if not (self.exists("operator_release") or self.exists("operator_deploy")):
             self.touch("operator_info")
-        self.touch("operator_release")
+        self.touch("operator_release_all")
         self.exists_and_touch("button_ensure")
         # Deploy the operator.
         self.touch("operator_deploy")
