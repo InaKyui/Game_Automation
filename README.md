@@ -1,114 +1,114 @@
-### 〓 Getting started 〓
-1. Please install python3 and run "prepare.bat" before running it for the first time.
-    - Download URL: https://www.python.org/downloads/release/python-31011/
-    - Version 3.10.11 is recommended, otherwise the installation of the library may generate exceptions.
-2. Modify the configuration file ".\Game_Automation\config\main.json".
-    - [emulator_path] the file path of the Android emulator.
-    - [game_list] the list of games that need to be executed.
-3. Run "start.bat" to start.
-    - If the tool requires administrator privileges to launch the emulator, please manually click "Yes" to launch the emulator.
+### 〓 快速上手 〓
+1. 首次运行前，请先安装 python3 并运行"prepare.bat"。
+    - 下载网址：https://www.python.org/downloads/release/python-31011/
+    - 建议使用 3.10.11 版本，否则安装依赖库时可能会产生异常。
+2. 修改配置文件".\Game_Automation\config\main.json".
+    - [emulator_path] 安卓模拟器的文件路径。
+    - [game_list] 需要执行的游戏列表。
+3. 运行"start.bat"。
+    - 如果需要管理员权限才能启动模拟器，请在弹窗出现后手动点击 "是 "。
 
-### 〓 Command-line parameter 〓
+### 〓 命令行参数 〓
 - h/help
-    - View command line prompts.
+    - 查看命令行提示。
 - debug/debug
-    - Turn on debug mode. Do not start the simulator.
+    - 打开调试模式，不会启动模拟器。
 - g/game
-    - Games name, more than one can be specified.
-    - Exmaple: -g fate_grand_order_cn princess_connect_re_dive_cn
+    - 游戏名称，可指定多个。
+    - 例如：-g fate_grand_order_cn princess_connect_re_dive_cn
 - s/speed
-    - Waiting speed, the default speed is 1x. The bigger the number, the slower the speed and the higher the stability.
-    - Example: -s 3
+    - 等待速度，默认速度为 1x。数字越大，速度越慢且稳定性越高。
+    - 例如：-s 3
 - t/task
-    - Tasks for different games, more than one can be specified. Please refer to 〓 Tasks 〓.
-    - Example: -t daily_quest complete
+    - 游戏中的任务，可指定多个，任务列表请查看〓 任务 〓。
+    - 例：-t daily_quest complete
 - st/special_task
-    - Special tasks for different games, more than one can be specified. Please refer to 〓 Special tasks 〓.
-    - Example: -st recruit
+    - 游戏中的特殊任务，可指定多个，任务列表请查看〓 特殊任务 〓。
+    - 例如：-st recruit
 
-### 〓 Tasks 〓
-- *Game_Name*
-    - [ ] *task name*, *task explanation*
-- All_Game
-    - [x] start
-    - [x] login, receive login bonus and enter the main interface
-    - [x] finish, save log
-- Arknights_Cn
-    - [x] source_center
-    - [x] infrastructure, harvest and redeploy
-    - [x] event_quest, challenge the last quest
-    - [x] daily_quest, challenge the coin/exp quest
-    - [x] recruit_center, harvest and redeploy
-    - [x] complete, receive daily task rewards
-- Fate_Grand_Order_Cn
-    - [x] daily_quest, coin quest
-- Honkai_Impact_3_Cn
-    - [x] energy, get daily energy
-    - [x] home, home quest and story sweep
-    - [x] fleet, application and submission of resource
-    - [x] quest, daily resource quest
-    - [ ] shopping, purchase fragment by coin
-    - [x] complete, receive daily task rewards
-- Princess_Connect_Re:Dive_Cn
-    - [x] explore
-    - [x] shopping, purchase experience
-    - [x] guild, give "like"
-    - [x] home, get energy
-    - [x] gashapon
-    - [x] dungeons, the hardest/penultimate level
-    - [x] arena, harvest and attack the first person
-    - [x] princess_arena, harvest and attack the first person
-    - [x] quest, challenge very hard boss and clear hard quests
-    - [x] complete, receive daily task rewards
+### 〓 任务 〓
+- 游戏名称
+    - [ ] *任务名称*/*任务中文翻译*，*任务说明*
+- 所有游戏
+    - [x] start/启动游戏
+    - [x] login/登录，领取登录奖励并进入主界面
+    - [x] finish/结束游戏，保存日志
+- 明日方舟_国服
+    - [x] source_center/资源中心，收获点数
+    - [x] infrastructure/基建，收获材料并重新部署干员
+    - [x] event_quest/活动关卡，挑战最后一次执行的任务
+    - [x] daily_quest/每日关卡，挑战金币/经验任务
+    - [x] recruit_center/招募中心，招募干员并重新发布招募令
+    - [x] complete/完成，领取每日任务奖励
+- 命运_冠位指定_国服
+    - [x] daily_quest/每日关卡，金币关卡
+- 崩坏3_国服
+    - [x] energy/体力，领取每日体力
+    - [x] home/家园，家园派遣和材料扫荡
+    - [x] fleet/舰队，申请和提交资源
+    - [x] quest/关卡，每日资源关卡
+    - [ ] shopping/商店，用金币购买碎片
+    - [x] complete/完成，领取每日任务奖励
+- 公主连结_Re:Dive_国服
+    - [x] explore/探索
+    - [x] shopping/商店，购买经验药水
+    - [x] guild/公会，点赞成员
+    - [x] home/家园，收获能量
+    - [x] gashapon/扭蛋
+    - [x] dungeons/地下城，挑战最难或倒数第二关
+    - [x] arena/竞技场，收取竞技场币并挑战上位玩家
+    - [x] princess_arena/公主竞技场，收取竞技场币并挑战上位玩家
+    - [x] quest/活动关卡，挑战高难BOSS并扫荡Hard关卡
+    - [x] complete/完成，领取每日任务奖励
 
-### 〓 Special tasks 〓
-- Arknights_Cn
-    - [x] recruit, recurring recruitment with tickets.
+### 〓 特殊任务 〓
+- 明日方舟_国服
+    - [x] recruit/招募，使用招募券反复招募。
 
-### 〓 Tips 〓
-- All_Game
-    - In [login], some of the special login interface has been adapted, if tool still throws an error., please follow the steps below to retry:
-        1. Manually login to the main interface.
-        2. Close the game.
-        3. Re-run the tool.
+### 〓 小贴士 〓
+- 所有游戏
+    - 关于[登录]，部分特殊登录界面已经进行了适配，如果工具仍然出现报错，请按照以下步骤重试：
+        1. 手动登录至游戏主界面。
+        2. 关闭游戏和模拟器。
+        3. 重新运行工具。
 
-- Princess_Connect_Re:Dive_Cn
-    - In [dungeons], you can modify "level_button" to achieve the penultimate level.
-    - In [quest], automatically detects the presence of event quest.
-    - In [quest], the default character is illya(christmas), and you can modify the material for your own character.
+- 公主连结_Re:Dive_国服
+    - 关于[地下城]，可以修改配置文件中的"level_button"来实现挑战倒数第二关。
+    - 关于[活动关卡]，已自动检测是否存在活动对话。
+    - 关于[活动关卡]，默认检测角色为伊莉亚（圣诞），您可以修改素材图片为自己的角色。
 
-- Arknights_Cn
-    - <*Critical*> When launching for the first time, make sure that the arknigths setting options.
-        - [Off] reminder - deployment tips
-        - [Off] reminder - infrastructure exit tips
-        - [Off] reminder - manufacture harvest tips
-        - [On] reminder - manufacture automatic replenishment
-    - In [infrastructure], only ensure staff rotation and do not compute the optimal solution.
-    - In [daily_quest], execute only after event quest failure, and prioritize coin quest.
-    - In [recruit_center], calculate the optimal solution based on PRTS operator information.
+- 明日方舟_国服
+    - <*关键*>首次启动时，请确保 Arknigths 设置选项。
+        - [关闭]提示 - 部署提示
+        - [关闭]提示 - 基础设施退出提示
+        - [关闭]提示 - 生产收获提示
+        - [开启]提示 - 生产自动补给
+    - 关于[基建]，只确保干员轮换，不计算干员排班最优解。
+    - 关于[每日关卡]，只在[活动关卡]失败后执行，并优先挑战金币关卡。
+    - 关于[招募中心]，根据PRTS干员信息计算招募最优解，若当前存在[高级资深干员]词条，工具会跳过此次招募。
 
-- Honkai_Impact_3_Cn
-    - <*Critical*> When launching for the first time, make sure that the quests resources have been downloaded.
-    - In [fleet], please ensure that you have joined the fleet.
-    - In [fleet], please ensure that sufficient resources exist for submission.
+- 崩坏3_国服
+    - <*关键*> 首次启动时，请确保每日材料界面的资源已下载。
+    - 关于[舰队]，请确保您已加入舰队。
+    - 关于[舰队]，请确保有足够的资源可供提交。
 
-- Fate_Grand_Order_Cn
-    - In [daily_quest], please ensure that you have a friend that caster is equipped with the craft essences monalisa lily.
+- 命运_冠位指定_国服
+    - 关于[每日关卡]，请确保您有一位好友的Caster装备了蒙娜丽莎Lily的金币礼装。
 
-### 〓 Expected updates 〓
-1. Princess_Connect_Re:Dive_Cn(2023.10)
-    - New area sweeping function;
-    - Equipment shop purchase function;
-2. Honkai_Impact_3_Cn(2023.10)
-    - Coin shop purchase function.
-3. <*New*> User_Interface(2023.10)
-    - Interface operation options.
+### 〓 预计更新 〓
+1. 公主连结_Re:Dive_国服(2023.10)
+    - 新区域扫荡；
+    - 商店购买装备；
+2. 崩坏3_国服(2023.10)
+    - 商店金币购买碎片。
+3. <*新增*> 用户界面(2023.10)
+    - 用户操作界面。
 
-### 〓 Latest version 2.7 〓
-1. [arknights] Fix the bug that small probability of failure for releasing operators in the infrastructure.
-2. [arknights] Fix the bug that touching too fast on the quest settle interface.
-3. [fate_grand_order] Fix the bug that touching too fast on the quest teaming interface.
-4. [honkai_impact_3] Fix the bug that touching too fast on the home quest interface.
-5. [honkai_impact_3] Fix the bug that touching too fast on the fleet submission interface.
-6. [princess_connect_re_dive] Fix the bug that there is wrong logic in entering guild interface.
-7. Optimized README.md and add a new history update file.
+### 〓 最新版本 2.7 〓
+1. [明日方舟_国服] 修正基建中撤退干员时存在小概率失败的bug。
+2. [明日方舟_国服] 修复关卡结算界面点击速度过快的问题。
+3. [命运_冠位指定_国服] 修复关卡选择助战时点击过快的bug。
+4. [崩坏3_国服] 修复家园派遣界面点击过快的bug。
+5. [崩坏3_国服] 修复舰队提交界面点击过快的bug。
+6. [公主连结_Re:Dive_国服] 修复进入公会界面时存在逻辑异常的bug。
+7. 优化README.md，新增历史更新记录文件。
