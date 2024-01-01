@@ -14,7 +14,7 @@ __version__ = "Version: 2.7"
 
 from base.game import Game
 from base.task import Task
-from base.common import *
+from base.utils import *
 from base.coordinate import Coordinate
 from airtest.core.api import *
 
@@ -188,7 +188,7 @@ class FateGrandOrder(Game):
         for cycle in range(3):
             self.touch("quest_class_caster", 2.5)
             for i in range(5):
-                if self.exists_and_touch("quest_craft_essences_monalisa", 2.5):
+                if self.exists_and_touch("craft_essences_monalisa", 2.5):
                     break
                 else:
                     # Refreshing cooldown.

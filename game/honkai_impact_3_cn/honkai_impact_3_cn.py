@@ -14,7 +14,7 @@ __version__ = "Version: 2.7"
 
 from base.game import Game
 from base.task import Task
-from base.common import *
+from base.utils import *
 from base.coordinate import Coordinate
 from airtest.core.api import *
 

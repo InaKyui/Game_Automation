@@ -16,7 +16,7 @@ import re
 import requests
 from base.game import Game
 from base.task import Task
-from base.common import *
+from base.utils import *
 from base.coordinate import Coordinate
 from typing import Dict, List, Tuple
 from airtest.core.api import *
