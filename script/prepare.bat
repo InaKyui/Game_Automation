@@ -1,6 +1,6 @@
 @REM Ensure that the virtual environment does not exist.
-del /s /q venv
-rd /s /q venv
+DEL /s /q venv
+RD /s /q venv
 @REM Creat a virtual environment and install libraries.
 python -m venv venv
 .\venv\Scripts\pip install airtest -i https://pypi.tuna.tsinghua.edu.cn/simple
