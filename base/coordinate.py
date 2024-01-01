@@ -14,7 +14,7 @@ __version__ = "Version: 2.6"
 
 import time
 import random
-from base.common import *
+from base.utils import *
 from typing import List
 from airtest.core.api import click, device
 
@@ -64,7 +64,7 @@ class Coordinate:
         actual_y = int(y + random.randint(-error_y, error_y))
         if actual_y < 0:
             actual_y = 0
-        actual_time = round(random.uniform(self.idle, self.idle + 0.5), 1)
+        actual_time = round(random.uniform(self.idle, self.idle + 0.3), 1)
         # Click.
         click([actual_x, actual_y])
         # print_message("Success", "Click ({0}, {1})".format(str(actual_x), str(actual_y)))

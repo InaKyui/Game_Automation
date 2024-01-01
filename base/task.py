@@ -12,7 +12,7 @@
 __authors__ = ["InaKyui <https://github.com/InaKyui>"]
 __version__ = "Version: 2.6"
 
-from base.common import get_class_attribute
+from base.utils import get_class_attribute
 from base.coordinate import Coordinate
 
 class Task:

@@ -16,7 +16,7 @@ import os
 import json
 import random
 import datetime
-from base.common import *
+from base.utils import *
 from base.task import Task
 from airtest.core.api import auto_setup, exists, home, start_app, stop_app, touch, Template, wait
 from airtest.report.report import simple_report

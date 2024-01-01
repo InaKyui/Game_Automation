@@ -17,7 +17,7 @@ import time
 import logging
 import argparse
 import subprocess
-from base.common import *
+from base.utils import *
 from airtest.core.api import *
 
 def main(args:argparse.Namespace):
@@ -55,6 +55,8 @@ def main(args:argparse.Namespace):
             except:
                 # Link normal emulators.
                 connect_device("Android:///")
+            # Link iOS.
+            # connect_device("iOS:///127.0.0.1:8100")
             # Connected successfully.
             print_message("Success", "Android device connected.")
             break
@@ -88,6 +90,10 @@ def main(args:argparse.Namespace):
         from games.fate_grand_order_cn import fate_grand_order_cn
         fgo_cn = fate_grand_order_cn.FateGrandOrder()
         game_list.append(fgo_cn)
+    if not args.game and "fate_grand_order_jp" in config_dict["game_list"] or "fate_grand_order_jp" in args.game:
+        from games.fate_grand_order_jp import fate_grand_order_jp
+        fgo_jp = fate_grand_order_jp.FateGrandOrder()
+        game_list.append(fgo_jp)
     # Execute scripts.
     for game in game_list:
         game.speed = args.speed
