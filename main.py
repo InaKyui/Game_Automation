@@ -75,23 +75,23 @@ def main(args:argparse.Namespace):
         args.game = []
     # Prefer <args.game>, otherwise use <config_dict>.
     if not args.game and "princess_connect_re_dive_cn" in config_dict["game_list"] or "princess_connect_re_dive_cn" in args.game:
-        from games.princess_connect_re_dive_cn import princess_connect_re_dive_cn
+        from game.princess_connect_re_dive_cn import princess_connect_re_dive_cn
         pcr_cn = princess_connect_re_dive_cn.PrincessConnectReDive()
         game_list.append(pcr_cn)
     if not args.game and "arknights_cn" in config_dict["game_list"] or "arknights_cn" in args.game:
-        from games.arknights_cn import arknights_cn
+        from game.arknights_cn import arknights_cn
         akn_cn = arknights_cn.Arknights()
         game_list.append(akn_cn)
     if not args.game and "honkai_impact_3_cn" in config_dict["game_list"] or "honkai_impact_3_cn" in args.game:
-        from games.honkai_impact_3_cn import honkai_impact_3_cn
+        from game.honkai_impact_3_cn import honkai_impact_3_cn
         hki_cn = honkai_impact_3_cn.HonkaiImpact3()
         game_list.append(hki_cn)
     if not args.game and "fate_grand_order_cn" in config_dict["game_list"] or "fate_grand_order_cn" in args.game:
-        from games.fate_grand_order_cn import fate_grand_order_cn
+        from game.fate_grand_order_cn import fate_grand_order_cn
         fgo_cn = fate_grand_order_cn.FateGrandOrder()
         game_list.append(fgo_cn)
     if not args.game and "fate_grand_order_jp" in config_dict["game_list"] or "fate_grand_order_jp" in args.game:
-        from games.fate_grand_order_jp import fate_grand_order_jp
+        from game.fate_grand_order_jp import fate_grand_order_jp
         fgo_jp = fate_grand_order_jp.FateGrandOrder()
         game_list.append(fgo_jp)
     # Execute scripts.
