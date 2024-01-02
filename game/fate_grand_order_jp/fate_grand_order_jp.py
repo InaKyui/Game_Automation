@@ -207,7 +207,7 @@ class FateGrandOrder(Game):
                     if i > 0:
                         time.sleep(11)
                     self.touch("quest_refresh")
-                    self.touch("quest_confirm", 1.5)
+                    self.touch("button_confirm", 1.5)
             if cycle == 0:
                 self.touch("quest_start")
             self.wait("quest_attack", timeout=30, interval=3)
@@ -269,19 +269,19 @@ class FateGrandOrder(Game):
             self.exists_and_touch("quest_cancel_friend", 1.5)
             self.touch("quest_continue", 2.5)
             if self.exists_and_touch("quest_golden_apple"):
-                self.touch("quest_decide", 3.5)
+                self.touch("button_decide", 3.5)
 
     @task_log
     def __task_event_gacha(self):
-        self.touch("gacha", 1.5)
+        self.touch("event_gacha", 1.5)
         try:
-            self.wait("gacha_continue", timeout=15, interval=3)
+            self.wait("event_gacha_continue", timeout=15, interval=3)
         except:
             touch((self.resolution[0] / 2, self.resolution[0] / 2))
-        pos = self.exists_and_touch("gacha_continue")
+        pos = self.exists_and_touch("event_gacha_continue")
         while True:
             touch(pos)
-            if self.exists("gacha_overflow"):
+            if self.exists("button_close"):
                 break
 
     def run_task(self, task:str=None, special_task:str=None):
