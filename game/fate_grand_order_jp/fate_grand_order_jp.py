@@ -35,12 +35,18 @@ class FateGrandOrder(Game):
         """
         # Resolution at the time of recording.
         rcr_rsl = (1920, 1080)
-        # Login.
-        task_name = "login"
-        task_mode = "start_task"
+        # # Login.
+        # task_name = "login"
+        # task_mode = "start_task"
+        # task = Task(task_name)
+        # self.tasks[task_mode].append(task)
+        # Friend gacha.
+        task_name = "friend_gacha"
+        task_mode = "random_task"
         task = Task(task_name)
         self.tasks[task_mode].append(task)
-        # Daily quest.
+
+        # # Quest.
         # Coordinate information based on (1920,1080)
         # Skill:          [1](485,540);[2](965,540);[3](1445,540)
         # Master:         [Main](1790,480)
@@ -50,142 +56,142 @@ class FateGrandOrder(Game):
         # Servant_3:      [1](1065,870);[2](1195,870);[3](1330,870)
         # Noble phantasm: [1](620,250);[2](960,250);[3](1290,250)
         # Card:           [1](195,750);[2](580,750)
-        task_name = "event_quest"
-        task_mode = "random_task"
-        task_coordinates = [
-            {
-                "scroll_bar": Coordinate(round(1885/rcr_rsl[0], 4),
-                               round(830/rcr_rsl[1], 4),
-                               round(3/rcr_rsl[0], 4),
-                               round(3/rcr_rsl[1], 4),
-                               1).get_coordinate_dict(),
-                "skill_1": Coordinate(round(485/rcr_rsl[0], 4),
-                                      round(540/rcr_rsl[1], 4),
-                                      round(5/rcr_rsl[0], 4),
-                                      round(5/rcr_rsl[1], 4),
-                                      1).get_coordinate_dict(),
-                "skill_2": Coordinate(round(965/rcr_rsl[0], 4),
-                                      round(540/rcr_rsl[1], 4),
-                                      round(5/rcr_rsl[0], 4),
-                                      round(5/rcr_rsl[1], 4),
-                                      1).get_coordinate_dict(),
-                "skill_3": Coordinate(round(1445/rcr_rsl[0], 4),
-                                      round(540/rcr_rsl[1], 4),
-                                      round(5/rcr_rsl[0], 4),
-                                      round(5/rcr_rsl[1], 4),
-                                      1).get_coordinate_dict(),
-                "switch_3": Coordinate(round(810/rcr_rsl[0], 4),
-                                       round(520/rcr_rsl[1], 4),
-                                       round(5/rcr_rsl[0], 4),
-                                       round(5/rcr_rsl[1], 4),
-                                       0.5).get_coordinate_dict(),
-                "switch_4": Coordinate(round(1110/rcr_rsl[0], 4),
-                                       round(520/rcr_rsl[1], 4),
-                                       round(5/rcr_rsl[0], 4),
-                                       round(5/rcr_rsl[1], 4),
-                                       0.5).get_coordinate_dict(),
-                "switch_confirm": Coordinate(round(960/rcr_rsl[0], 4),
-                                             round(940/rcr_rsl[1], 4),
-                                             round(5/rcr_rsl[0], 4),
-                                             round(5/rcr_rsl[1], 4),
-                                             3).get_coordinate_dict(),
-                "master_main": Coordinate(round(1790/rcr_rsl[0], 4),
-                                          round(480/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "master_1": Coordinate(round(1360/rcr_rsl[0], 4),
-                                       round(470/rcr_rsl[1], 4),
-                                       round(5/rcr_rsl[0], 4),
-                                       round(5/rcr_rsl[1], 4),
-                                       0.5).get_coordinate_dict(),
-                "master_2": Coordinate(round(1495/rcr_rsl[0], 4),
-                                       round(470/rcr_rsl[1], 4),
-                                       round(5/rcr_rsl[0], 4),
-                                       round(5/rcr_rsl[1], 4),
-                                       0.5).get_coordinate_dict(),
-                "master_3": Coordinate(round(1630/rcr_rsl[0], 4),
-                                       round(470/rcr_rsl[1], 4),
-                                       round(5/rcr_rsl[0], 4),
-                                       round(5/rcr_rsl[1], 4),
-                                       0.5).get_coordinate_dict(),
-                "servant_1_1": Coordinate(round(110/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_1_2": Coordinate(round(245/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_1_3": Coordinate(round(375/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_2_1": Coordinate(round(590/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_2_2": Coordinate(round(720/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_2_3": Coordinate(round(850/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_3_1": Coordinate(round(1065/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_3_2": Coordinate(round(1195/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "servant_3_3": Coordinate(round(1330/rcr_rsl[0], 4),
-                                          round(870/rcr_rsl[1], 4),
-                                          round(5/rcr_rsl[0], 4),
-                                          round(5/rcr_rsl[1], 4),
-                                          0.5).get_coordinate_dict(),
-                "noble_phantasm_1": Coordinate(round(620/rcr_rsl[0], 4),
-                                               round(250/rcr_rsl[1], 4),
-                                               round(5/rcr_rsl[0], 4),
-                                               round(5/rcr_rsl[1], 4),
-                                               0.5).get_coordinate_dict(),
-                "noble_phantasm_2": Coordinate(round(960/rcr_rsl[0], 4),
-                                               round(250/rcr_rsl[1], 4),
-                                               round(5/rcr_rsl[0], 4),
-                                               round(5/rcr_rsl[1], 4),
-                                               0.5).get_coordinate_dict(),
-                "noble_phantasm_3": Coordinate(round(1290/rcr_rsl[0], 4),
-                                               round(250/rcr_rsl[1], 4),
-                                               round(5/rcr_rsl[0], 4),
-                                               round(5/rcr_rsl[1], 4),
-                                               0.5).get_coordinate_dict(),
-                "card_1": Coordinate(round(195/rcr_rsl[0], 4),
-                                     round(750/rcr_rsl[1], 4),
-                                     round(5/rcr_rsl[0], 4),
-                                     round(5/rcr_rsl[1], 4),
-                                     0.3).get_coordinate_dict(),
-                "card_2": Coordinate(round(580/rcr_rsl[0], 4),
-                                     round(750/rcr_rsl[1], 4),
-                                     round(5/rcr_rsl[0], 4),
-                                     round(5/rcr_rsl[1], 4),
-                                     0.3).get_coordinate_dict()
-            }
-        ]
+        # task_name = "event_quest"
+        # task_mode = "random_task"
+        # task_coordinates = [
+        #     {
+        #         "scroll_bar": Coordinate(round(1885/rcr_rsl[0], 4),
+        #                        round(830/rcr_rsl[1], 4),
+        #                        round(3/rcr_rsl[0], 4),
+        #                        round(3/rcr_rsl[1], 4),
+        #                        1).get_coordinate_dict(),
+        #         "skill_1": Coordinate(round(485/rcr_rsl[0], 4),
+        #                               round(540/rcr_rsl[1], 4),
+        #                               round(5/rcr_rsl[0], 4),
+        #                               round(5/rcr_rsl[1], 4),
+        #                               1).get_coordinate_dict(),
+        #         "skill_2": Coordinate(round(965/rcr_rsl[0], 4),
+        #                               round(540/rcr_rsl[1], 4),
+        #                               round(5/rcr_rsl[0], 4),
+        #                               round(5/rcr_rsl[1], 4),
+        #                               1).get_coordinate_dict(),
+        #         "skill_3": Coordinate(round(1445/rcr_rsl[0], 4),
+        #                               round(540/rcr_rsl[1], 4),
+        #                               round(5/rcr_rsl[0], 4),
+        #                               round(5/rcr_rsl[1], 4),
+        #                               1).get_coordinate_dict(),
+        #         "switch_3": Coordinate(round(810/rcr_rsl[0], 4),
+        #                                round(520/rcr_rsl[1], 4),
+        #                                round(5/rcr_rsl[0], 4),
+        #                                round(5/rcr_rsl[1], 4),
+        #                                0.5).get_coordinate_dict(),
+        #         "switch_4": Coordinate(round(1110/rcr_rsl[0], 4),
+        #                                round(520/rcr_rsl[1], 4),
+        #                                round(5/rcr_rsl[0], 4),
+        #                                round(5/rcr_rsl[1], 4),
+        #                                0.5).get_coordinate_dict(),
+        #         "switch_confirm": Coordinate(round(960/rcr_rsl[0], 4),
+        #                                      round(940/rcr_rsl[1], 4),
+        #                                      round(5/rcr_rsl[0], 4),
+        #                                      round(5/rcr_rsl[1], 4),
+        #                                      3).get_coordinate_dict(),
+        #         "master_main": Coordinate(round(1790/rcr_rsl[0], 4),
+        #                                   round(480/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "master_1": Coordinate(round(1360/rcr_rsl[0], 4),
+        #                                round(470/rcr_rsl[1], 4),
+        #                                round(5/rcr_rsl[0], 4),
+        #                                round(5/rcr_rsl[1], 4),
+        #                                0.5).get_coordinate_dict(),
+        #         "master_2": Coordinate(round(1495/rcr_rsl[0], 4),
+        #                                round(470/rcr_rsl[1], 4),
+        #                                round(5/rcr_rsl[0], 4),
+        #                                round(5/rcr_rsl[1], 4),
+        #                                0.5).get_coordinate_dict(),
+        #         "master_3": Coordinate(round(1630/rcr_rsl[0], 4),
+        #                                round(470/rcr_rsl[1], 4),
+        #                                round(5/rcr_rsl[0], 4),
+        #                                round(5/rcr_rsl[1], 4),
+        #                                0.5).get_coordinate_dict(),
+        #         "servant_1_1": Coordinate(round(110/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_1_2": Coordinate(round(245/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_1_3": Coordinate(round(375/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_2_1": Coordinate(round(590/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_2_2": Coordinate(round(720/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_2_3": Coordinate(round(850/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_3_1": Coordinate(round(1065/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_3_2": Coordinate(round(1195/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "servant_3_3": Coordinate(round(1330/rcr_rsl[0], 4),
+        #                                   round(870/rcr_rsl[1], 4),
+        #                                   round(5/rcr_rsl[0], 4),
+        #                                   round(5/rcr_rsl[1], 4),
+        #                                   0.5).get_coordinate_dict(),
+        #         "noble_phantasm_1": Coordinate(round(620/rcr_rsl[0], 4),
+        #                                        round(250/rcr_rsl[1], 4),
+        #                                        round(5/rcr_rsl[0], 4),
+        #                                        round(5/rcr_rsl[1], 4),
+        #                                        0.5).get_coordinate_dict(),
+        #         "noble_phantasm_2": Coordinate(round(960/rcr_rsl[0], 4),
+        #                                        round(250/rcr_rsl[1], 4),
+        #                                        round(5/rcr_rsl[0], 4),
+        #                                        round(5/rcr_rsl[1], 4),
+        #                                        0.5).get_coordinate_dict(),
+        #         "noble_phantasm_3": Coordinate(round(1290/rcr_rsl[0], 4),
+        #                                        round(250/rcr_rsl[1], 4),
+        #                                        round(5/rcr_rsl[0], 4),
+        #                                        round(5/rcr_rsl[1], 4),
+        #                                        0.5).get_coordinate_dict(),
+        #         "card_1": Coordinate(round(195/rcr_rsl[0], 4),
+        #                              round(750/rcr_rsl[1], 4),
+        #                              round(5/rcr_rsl[0], 4),
+        #                              round(5/rcr_rsl[1], 4),
+        #                              0.3).get_coordinate_dict(),
+        #         "card_2": Coordinate(round(580/rcr_rsl[0], 4),
+        #                              round(750/rcr_rsl[1], 4),
+        #                              round(5/rcr_rsl[0], 4),
+        #                              round(5/rcr_rsl[1], 4),
+        #                              0.3).get_coordinate_dict()
+        #     }
+        # ]
         # task = Task(task_name, task_coordinates)
         # self.tasks[task_mode].append(task)
-        # Draw.
-        task_name = "gacha"
-        task_mode = "random_task"
+        # # Event_gacha.
+        # task_name = "event_gacha"
+        # task_mode = "random_task"
         # task = Task(task_name)
         # self.tasks[task_mode].append(task)
 
@@ -284,12 +290,22 @@ class FateGrandOrder(Game):
             if self.exists("button_close"):
                 break
 
+    def __task_friend_gacha(self):
+        if self.exists_and_touch("friend_gacha_free_summon") or self.exists_and_touch("friend_gacha_summon"):
+            while True:
+                self.touch("button_decide")
+                for _ in range(10):
+                    touch((self.resolution[0] * 0.9, self.resolution[0] * 0.7))
+                    if self.exists_and_touch("friend_gacha_continue"):
+                        break
+
     def run_task(self, task:str=None, special_task:str=None):
         # Collection of tasks and special tasks.
         switch_tasks  = {
             "login": self.__task_login,
-            # "event_quest": self.__task_event_quest
-            # "event_gacha": self.__task_event_gacha
+            "friend_gacha": self.__task_friend_gacha,
+            "event_quest": self.__task_event_quest,
+            "event_gacha": self.__task_event_gacha
         }
         # Running tasks based on task type.
         if task:
